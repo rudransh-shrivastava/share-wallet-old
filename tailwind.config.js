@@ -4,10 +4,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        dark: 'rgba(58,140,126,1)',
-        base: 'rgba(22,50,54,255)',
-        orange: 'rgba(201, 115, 48, 255)',
-        white: 'rgba(212, 200, 178, 255)',
+        accentDark: 'hsla(170, 41%, 39%, 1)',
+        accentBase: 'hsla(188, 42%, 15%, 1)',
+        accentOrange: 'hsla(26, 61%, 49%, 1)',
+        accentLight: 'hsla(39, 28%, 76%, 1)',
       },
     },
   },

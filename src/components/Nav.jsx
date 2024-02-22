@@ -2,7 +2,7 @@ import React from 'react';
 
 const Nav = () => {
   return (
-    <nav className="flex justify-between items-center bg-dark p-4">
+    <nav className="flex justify-between items-center bg-accentDark p-4">
       <div className="flex items-center">
         <div className="mr-4">
           <img
