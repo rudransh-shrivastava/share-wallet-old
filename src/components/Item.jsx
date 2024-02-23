@@ -1,18 +1,21 @@
 import React from 'react';
 
-const Item = () => {
+const Item = ({ transaction }) => {
+  const { name, amount, ownsMoney } = transaction;
   return (
     <>
       <div>
         <li>
           <div className="flex items-center gap-3 p-3 cursor-pointer">
             <div className="w-11 h-11 flex items-center justify-center rounded-full bg-accentBorder">
-              P
+              {name[0]}
             </div>
             <div className="flex flex-col">
-              <div>Person 1</div>
+              <div>{name}</div>
               <div className="text-sm opacity-70">
-                You owe Person 1 &#8377;56
+                {ownsMoney
+                  ? `You owe ${name} \u20B9${amount}`
+                  : `${name} owes you \u20B9${amount}`}
               </div>
             </div>
           </div>

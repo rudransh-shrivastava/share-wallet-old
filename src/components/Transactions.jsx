@@ -1,5 +1,6 @@
 import React from 'react';
 import Item from './Item';
+import data from '../assets/data.json';
 
 const Transactions = () => {
   return (
@@ -9,7 +10,11 @@ const Transactions = () => {
           You Owe
         </div>
         <ul className="divide-y-2 divide-accentBorder">
-          <Item /> <Item /> <Item /> <Item />
+          {data.transactions
+            .filter((transaction) => transaction.ownsMoney)
+            .map((transaction) => (
+              <Item key={transaction.id} transaction={transaction} />
+            ))}
         </ul>
       </div>
       <div className="w-full">
@@ -17,7 +22,11 @@ const Transactions = () => {
           You are Owed
         </div>
         <ul className="divide-y-2 divide-accentBorder">
-          <Item /> <Item /> <Item /> <Item />
+          {data.transactions
+            .filter((transaction) => !transaction.ownsMoney)
+            .map((transaction) => (
+              <Item key={transaction.id} transaction={transaction} />
+            ))}
         </ul>
       </div>
     </div>
