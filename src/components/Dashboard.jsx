@@ -1,33 +1,12 @@
 import React from 'react';
+import Heading from './Heading';
+import Overall from './Overall';
 
 function Dashboard() {
   return (
     <div className="container mx-auto my-8 border-2 border-accentBorder divide-y-2 divide-accentBorder rounded-md">
-      <div className="flex items-center  p-4">
-        <span className="text-xl">Dashboard</span>
-        <div className="flex gap-2 ml-auto">
-          <button className="bg-accentDark text-white px-4 py-2 rounded-md">
-            Add Expense
-          </button>
-          <button className="bg-accentDark text-white px-4 py-2 rounded-md">
-            Add Friend
-          </button>
-        </div>
-      </div>
-      <div className="flex w-full justify-center gap-8">
-        <div className="flex flex-col items-center p-4">
-          <span>Total Balance</span>
-          <span className="text-2xl">+ &#8377;18</span>
-        </div>
-        <div className="flex flex-col items-center p-4">
-          <span>You Owe</span>
-          <span className="text-2xl">&#8377;45</span>
-        </div>
-        <div className="flex flex-col items-center p-4">
-          <span>You are Owed</span>
-          <span className="text-2xl">&#8377;86</span>
-        </div>
-      </div>
+      <Heading />
+      <Overall />
       <div className="flex divide-x-2 divide-accentBorder">
         <div className="w-full">
           <div className="w-full py-2 border-b-2 border-accentBorder text-center">
