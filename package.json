@@ -1,5 +1,10 @@
 {
   "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npx nodemon server.js",
+    "client": "cd client && npm run dev"
   }
 }
