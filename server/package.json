@@ -1,0 +1,22 @@
+{
+  "name": "share-wallet",
+  "version": "1.0.0",
+  "description": "Backend Server for Share Wallet",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rudransh-shrivastava/share-wallet.git"
+  },
+  "author": "Rudransh Shrivastava & Gopal Lohar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rudransh-shrivastava/share-wallet/issues"
+  },
+  "homepage": "https://github.com/rudransh-shrivastava/share-wallet#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
