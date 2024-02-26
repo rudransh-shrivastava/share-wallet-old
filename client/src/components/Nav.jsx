@@ -15,7 +15,9 @@ const Nav = () => {
           Share Wallet
         </div>
       </div>
-      <button className="ml-2 text-3xl text-white">Logout</button>
+      <button className="bg-white hover:bg-emerald-700 text-accentDark px-4 py-2 rounded-md">
+        Login
+      </button>
     </nav>
   );
 };
