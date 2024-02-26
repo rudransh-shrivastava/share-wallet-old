@@ -21,12 +21,12 @@ app.use(express.json());
 app.use(cors());
 
 // TODO: Register on google cloud console and get the client id and secret
-app.get(
-  '/login/google',
-  passport.authenticate('google', {
-    scope: ['email'],
-  })
-);
+// app.get(
+//   '/login/google',
+//   passport.authenticate('google', {
+//     scope: ['email'],
+//   })
+// );
 
 // NOTE: Temporary testing route
 app.post('/submit', (req, res) => {
