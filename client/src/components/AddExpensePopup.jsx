@@ -1,5 +1,6 @@
 import React from 'react';
 import usePopup from '../context/popup';
+import axios from 'axios';
 
 function AddExpensePopup() {
   const { setShowAddExpensePopup } = usePopup();
@@ -41,7 +42,10 @@ function AddExpensePopup() {
             placeholder="Enter Amount"
             className="bg-white border-2 border-accentBorder rounded-sm"
           />
-          <button className="h-8 w-8 flex items-center justify-center">
+          <button
+            className="h-8 w-8 flex items-center justify-center"
+            onSubmit={formSubmit}
+          >
             Submit
           </button>
         </div>
@@ -50,4 +54,13 @@ function AddExpensePopup() {
   );
 }
 
+const formSubmit = (e) => {
+  e.preventDefault();
+  axios
+    .post('http://localhost:3001/submitForm', {
+      amount: e.target.amount.value,
+    })
+    .then((response) => console.log(response))
+    .catch((error) => console.log(error));
+};
 export default AddExpensePopup;
