@@ -5,10 +5,12 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = 3001;
-const Amount = require('./models/Amount'); // NOTE: Using this model temporarily
 const DATABASE_USER = process.env.DATABASE_USER;
 const DATABASE_PASS = process.env.DATABASE_PASS;
 const mongoose = require('mongoose');
+const User = require('./models/Users');
+const Friend = require('./models/Friends');
+const Transaction = require('./models/Transactions');
 
 const uri = `mongodb+srv://${DATABASE_USER}:${DATABASE_PASS}@share-wallet-cluster.mk5e7qu.mongodb.net/share-wallet-db?retryWrites=true&w=majority&appName=share-wallet-cluster`;
 
@@ -30,11 +32,7 @@ app.use(cors());
 
 // NOTE: Temporary testing route
 app.post('/submit', (req, res) => {
-  console.log(req.body.amount);
-  const amount = req.body.amount * 2;
-  const newAmount = new Amount({ amount });
-
-  newAmount.save();
+  console.log('Submitted');
 });
 
 app.listen(port, () => {
