@@ -5,7 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = 3001;
-const Amount = require('./models/Amount'); // TODO: Using this model temporarily
+const Amount = require('./models/Amount'); // NOTE: Using this model temporarily
 const DATABASE_USER = process.env.DATABASE_USER;
 const DATABASE_PASS = process.env.DATABASE_PASS;
 const mongoose = require('mongoose');
@@ -20,6 +20,7 @@ mongoose
 app.use(express.json());
 app.use(cors());
 
+// TODO: Register on google cloud console and get the client id and secret
 app.get(
   '/login/google',
   passport.authenticate('google', {
@@ -27,7 +28,7 @@ app.get(
   })
 );
 
-// TODO: Temporary testing route
+// NOTE: Temporary testing route
 app.post('/submit', (req, res) => {
   console.log(req.body.amount);
   const amount = req.body.amount * 2;

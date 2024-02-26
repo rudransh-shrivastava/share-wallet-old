@@ -2,7 +2,7 @@ import React from 'react';
 
 const Nav = () => {
   return (
-    <nav className="flex justify-between items-center bg-accentDark p-4">
+    <nav className="flex justify-between items-center bg-accentDark p-2">
       <div className="flex items-center">
         <div className="mr-4">
           <img
@@ -15,9 +15,12 @@ const Nav = () => {
           Share Wallet
         </div>
       </div>
-      <button className="bg-white hover:bg-emerald-700 text-accentDark px-4 py-2 rounded-md">
-        Login
-      </button>
+      <a href="/login/google">
+        <button className="bg-white hover:bg-emerald-700 text-accentDark px-4 py-2 rounded-md">
+          Login
+        </button>
+      </a>
+      {/* TODO: Change to Logout If already Logged In */}
     </nav>
   );
 };
