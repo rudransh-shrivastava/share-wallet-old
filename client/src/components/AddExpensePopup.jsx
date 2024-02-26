@@ -56,7 +56,7 @@ function AddExpensePopup() {
   );
 }
 
-// INFO: Temporary testing function to make a request to /submit that sends the amount to the server and the server to the database
+// NOTE: Temporary testing function to make a request to /submit that sends the amount to the server and the server to the database
 const formSubmit = (e) => {
   e.preventDefault();
   const amountValue = e.target.elements.amount.value;
