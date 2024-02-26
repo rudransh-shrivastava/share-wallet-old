@@ -10,7 +10,7 @@ const DATABASE_USER = process.env.DATABASE_USER;
 const DATABASE_PASS = process.env.DATABASE_PASS;
 const mongoose = require('mongoose');
 
-const uri = `mongodb+srv://${DATABASE_USER}:${DATABASE_PASS}@share-wallet-cluster.mk5e7qu.mongodb.net/amount-db?retryWrites=true&w=majority&appName=share-wallet-cluster`; // TODO: change db name
+const uri = `mongodb+srv://${DATABASE_USER}:${DATABASE_PASS}@share-wallet-cluster.mk5e7qu.mongodb.net/share-wallet-db?retryWrites=true&w=majority&appName=share-wallet-cluster`;
 
 mongoose
   .connect(uri)
@@ -19,6 +19,13 @@ mongoose
 
 app.use(express.json());
 app.use(cors());
+
+app.get(
+  '/login/google',
+  passport.authenticate('google', {
+    scope: ['email'],
+  })
+);
 
 // TODO: Temporary testing route
 app.post('/submit', (req, res) => {
