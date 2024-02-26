@@ -1,3 +1,4 @@
+// TODO: Using this model temporarily
 const mongoose = require('mongoose');
 const AmountSchema = new mongoose.Schema({
   amount: Number,
