@@ -36,6 +36,14 @@ function AddExpensePopup() {
             placeholder="Enter Description"
             className="bg-white border-2 border-accentBorder rounded-sm"
           />
+          <input
+            type="number"
+            placeholder="Enter Amount"
+            className="bg-white border-2 border-accentBorder rounded-sm"
+          />
+          <button className="h-8 w-8 flex items-center justify-center">
+            Submit
+          </button>
         </div>
       </div>
     </div>

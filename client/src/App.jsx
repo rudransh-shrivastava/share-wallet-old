@@ -6,7 +6,7 @@ import { PopupProvider } from './context/popup';
 import AddExpensePopup from './components/AddExpensePopup';
 
 function App() {
-  const [showAddExpensePopup, setShowAddExpensePopup] = useState(true); // TODO: set it false by default
+  const [showAddExpensePopup, setShowAddExpensePopup] = useState(false);
   return (
     <PopupProvider value={{ showAddExpensePopup, setShowAddExpensePopup }}>
       <Nav />
