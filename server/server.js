@@ -29,8 +29,29 @@ app.get('/total', (req, res) => {
   const total = -18;
   const owes = 40;
   const owed = 22;
-  console.log('From the backend: ' + user);
   res.json({ total, owes, owed });
+});
+
+// get user's friends list
+// TODO: Calculate the actual friends
+app.get('/friends', (req, res) => {
+  const user = req.query.user;
+  const friends = [
+    { name: 'John Doe', id: 1 },
+    { name: 'Test Doe', id: 2 },
+    { name: 'Jane Smith', id: 3 },
+    { name: 'Jhonny Doe', id: 4 },
+    { name: 'Test Smith', id: 5 },
+    { name: 'Ramesh Smith', id: 6 },
+    { name: 'Rajendra Doe', id: 7 },
+    { name: 'Test Gupta', id: 8 },
+    { name: 'Surya', id: 9 },
+    { name: 'Ravish', id: 10 },
+    { name: 'Rahul', id: 11 },
+    { name: 'Rajeev raja', id: 12 },
+    { name: 'Ranjan', id: 13 },
+  ];
+  res.json(friends);
 });
 
 // TODO: Fetch the user details and then calculate the total, what user owes, and what others owe to the user

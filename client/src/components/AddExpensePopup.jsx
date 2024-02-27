@@ -5,6 +5,16 @@ import UserCard from './UserCard';
 
 // NOTE: this is temporary it's not exactly where this function will live or will it live or not
 const getSearchedUsers = (query = '') => {
+  const testUser = 'TestUser';
+  let userFriends = axios
+    .get('http://localhost:3001/friends', {
+      params: { testUser },
+    })
+    .then((res) => {
+      userFriends = res.data;
+      console.log(userFriends);
+    });
+  // TODO: Gopal: Return userFriends below, Promise takes time and the below return statement executes, I can't get it working, taking too much time, I'll do something else for now
   return [
     { name: 'John Doe', id: 1 },
     { name: 'Test Doe', id: 2 },
@@ -177,16 +187,9 @@ function AddExpensePopup() {
   );
 }
 
-// NOTE: Temporary testing function to make a request to /submit that sends the amount to the server and the server to the database
+// TODO: Create endpoint for submitting the form
 const formSubmit = (e) => {
   e.preventDefault();
-  const amountValue = e.target.elements.amount.value;
-  console.log(amountValue);
-  axios
-    .post('http://localhost:3001/submit', {
-      amount: amountValue,
-    })
-    .then((response) => console.log(response))
-    .catch((error) => console.log(error));
+  console.log('Form has been submitted!');
 };
 export default AddExpensePopup;

@@ -26,7 +26,7 @@ const Overall = () => {
 // TODO: Gopal: Load this data everytime the page is loaded
 function getUserTotal(user) {
   axios.get('http://localhost:3001/total', { params: { user } }).then((res) => {
-    console.log(res);
+    console.log(res.data);
   });
 }
 getUserTotal('Gopal');
