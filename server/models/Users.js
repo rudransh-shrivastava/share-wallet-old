@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    // TODO: Other fields
   },
   {
     timestamps: true,

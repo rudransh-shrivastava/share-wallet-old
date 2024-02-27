@@ -1,5 +1,6 @@
 import React from 'react';
 import data from '../assets/data.json';
+import axios from 'axios';
 
 const Overall = () => {
   const { totalBalance, youOwe, youAreOwed } = data.overall;
@@ -22,4 +23,11 @@ const Overall = () => {
   );
 };
 
+// TODO: Gopal: Load this data everytime the page is loaded
+function getUserTotal(user) {
+  axios.get('http://localhost:3001/total', { params: { user } }).then((res) => {
+    console.log(res);
+  });
+}
+getUserTotal('Gopal');
 export default Overall;

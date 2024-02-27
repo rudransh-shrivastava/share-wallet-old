@@ -22,6 +22,22 @@ mongoose
 app.use(express.json());
 app.use(cors());
 
+// get user details: the total, what user owes, and what others owe to the user
+// TODO: Calculate the values
+app.get('/total', (req, res) => {
+  const user = req.query.user;
+  const total = -18;
+  const owes = 40;
+  const owed = 22;
+  console.log('From the backend: ' + user);
+  res.json({ total, owes, owed });
+});
+
+// TODO: Fetch the user details and then calculate the total, what user owes, and what others owe to the user
+// function fetchUserTotal(user){
+
+// }
+
 // TODO: Register on google cloud console and get the client id and secret
 // app.get(
 //   '/login/google',
