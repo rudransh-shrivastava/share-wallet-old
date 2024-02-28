@@ -8,7 +8,7 @@ const Nav = () => {
         <div className="mr-4">
           <img
             className="size-12"
-            src="public/sharewallet.jpg"
+            src="src/sharewallet.jpg"
             alt="Share Wallet"
           />
         </div>
