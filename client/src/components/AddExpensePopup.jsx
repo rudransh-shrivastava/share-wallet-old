@@ -7,9 +7,7 @@ function AddExpensePopup() {
   const getSearchedUsers = (query = '') => {
     const testUser = 'TestUser';
     let userFriends = axios
-      .get('http://localhost:3001/friends', {
-        params: { testUser },
-      })
+      .post('http://localhost:3001/friends', { testUser })
       .then((res) => {
         userFriends = res.data;
         const searchedFriends = userFriends.filter((user) =>

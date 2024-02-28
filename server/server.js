@@ -58,8 +58,7 @@ app.get('/total', (req, res) => {
 
 // get user's friends list
 // TODO: Calculate the actual friends
-app.get('/friends', (req, res) => {
-  const user = req.query.user;
+app.post('/friends', (req, res) => {
   const friends = [
     { name: 'Kya backend ne kaha', id: 14 },
     { name: 'Kya Frontend ne suna', id: 15 },
