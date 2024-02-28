@@ -22,6 +22,30 @@ mongoose
 app.use(express.json());
 app.use(cors());
 
+// adds a new user to the database but returns an error if the user already exists
+app.post('/CreateUser', (req, res) => {
+  const { googleId, name, email } = req.body;
+  // Check if a user with the provided googleID already exists
+  User.find().then((users) => {
+    const matchingUser = users.find((user) => user.googleId === googleId);
+    if (matchingUser) {
+      return res.status(401).json({ error: 'User already exists' });
+    } else {
+      // If the user doesn't exist, create a new user
+      const newUser = new User({
+        googleId,
+        name,
+        email,
+      });
+
+      return newUser
+        .save()
+        .then((user) => res.status(201).json(user))
+        .catch((error) => res.status(400).json({ error: error.message }));
+    }
+  });
+});
+
 // get user details: the total, what user owes, and what others owe to the user
 // TODO: Calculate the values
 app.get('/total', (req, res) => {
