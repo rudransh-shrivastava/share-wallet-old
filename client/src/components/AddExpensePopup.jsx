@@ -28,8 +28,8 @@ function AddExpensePopup() {
   const [addExpenseWith, setAddExpenseWith] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
   useEffect(() => {
-    getSearchedUsers('');
-  }, []);
+    getSearchedUsers(searchUsersInput.current.value);
+  }, [addExpenseWith]);
   const [expenseTime, setExpenseTime] = useState(new Date());
   return (
     <div className="fixed inset-0 flex items-center justify-center">
