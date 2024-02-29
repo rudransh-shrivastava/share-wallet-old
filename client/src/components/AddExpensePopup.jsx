@@ -5,9 +5,32 @@ import UserCard from './UserCard';
 
 function AddExpensePopup() {
   const getSearchedUsers = (query = '') => {
-    const testUser = 'TestUser';
+    // NOTE: I tried to implement this for a very long time, i cant do this, please do it
+    // TODO: Gopal: see the currentUser below? thats the userId of the currently logged in user, you have to fetch all this friends using /friends with parameter {userId} and then oonce you get all his friends, you have to iterate over each friend and get their details individually using /getDetails, /getDetails requires an ID as the parameter which you will get from /friends, and this /getDetails returns an object with all the details of the user, you have to get their name from this object and create an array like the one below in OLD CODE Section
+    // I dont want to spend more time on this, please do it
+    // const currentUser = '65dccfbf4044f13cbf65d10f';
+    // // TODO: Gopal: Display this data please
+    // let userFriends = axios
+    //   .post('http://localhost:3001/friends', { currentUser })
+    //   .then((res) => {
+    //     console.log('Result after /friends: ' + JSON.stringify(res.data));
+    //     const friendDetailsPromises = res.data.map((friend) => {
+    //       return axios
+    //         .post('http://localhost:3001/getDetails', {
+    //           friendId: friend.friendId,
+    //         })
+    //         .then((res) => res.data);
+    //     });
+    //     console.log('friendDetailsPromises: ', friendDetailsPromises);
+    //     return Promise.all(friendDetailsPromises);
+    //   })
+    //   .then((friendDetails) => {
+    //     console.log('Friend details: ' + JSON.stringify(friendDetails));
+    //   })
+    //   .catch((err) => console.log(err));
+    // NOTE: OLD CODE
     let userFriends = axios
-      .post('http://localhost:3001/friends', { testUser })
+      .post('http://localhost:3001/friends', { currentUser })
       .then((res) => {
         userFriends = res.data;
         const searchedFriends = userFriends.filter((user) =>

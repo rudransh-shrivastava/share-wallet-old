@@ -1,6 +1,16 @@
 const User = require('../models/Users');
-
+const Friend = require('../models/Friends');
 module.exports = {
+  getDetails: function (req, res) {
+    const userId = req.body.userId;
+    User.find().then((users) => {
+      for (const user of users) {
+        if (user.id == userId) {
+          res.json(user);
+        }
+      }
+    });
+  },
   createUser: function (req, res) {
     const { googleId, name, email } = req.body;
     // Check if a user with the provided googleID already exists
@@ -25,6 +35,7 @@ module.exports = {
   getTotal: function (req, res) {
     // TODO: Implement getTotal controller logic
     const user = req.query.user;
+
     const total = -18;
     const owes = 40;
     const owed = 22;
@@ -32,23 +43,10 @@ module.exports = {
   },
   getFriends: function (req, res) {
     // TODO: Implement getFriends controller logic
-    const friends = [
-      { name: 'Kya backend ne kaha', id: 14 },
-      { name: 'Kya Frontend ne suna', id: 15 },
-      { name: 'John Doe', id: 1 },
-      { name: 'Test Doe', id: 2 },
-      { name: 'Jane Smith', id: 3 },
-      { name: 'Jhonny Doe', id: 4 },
-      { name: 'Test Smith', id: 5 },
-      { name: 'Ramesh Smith', id: 6 },
-      { name: 'Rajendra Doe', id: 7 },
-      { name: 'Test Gupta', id: 8 },
-      { name: 'Surya', id: 9 },
-      { name: 'Ravish', id: 10 },
-      { name: 'Rahul', id: 11 },
-      { name: 'Rajeev raja', id: 12 },
-      { name: 'Ranjan', id: 13 },
-    ];
-    res.json(friends);
+    Friend.find().then((users) => {
+      const currentUser = req.body.currentUser;
+      const friends = users.filter((user) => user.userId == currentUser);
+      res.json(friends);
+    });
   },
 };

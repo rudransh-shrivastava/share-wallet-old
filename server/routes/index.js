@@ -6,6 +6,7 @@ const googleAuthController = require('../controllers/googleAuthController');
 router.post('/CreateUser', userController.createUser);
 router.get('/total', userController.getTotal);
 router.post('/friends', userController.getFriends);
+router.post('/getDetails', userController.getDetails);
 router.get('/auth/google', googleAuthController.authorize);
 router.get('/oauth2callback', googleAuthController.oauth2callback);
 module.exports = router;
