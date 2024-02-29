@@ -1,6 +1,11 @@
 import React from 'react';
 
-function UserCard({ user, setAddExpenseWith }) {
+function UserCard({
+  user,
+  setAddExpenseWith,
+  searchUsersInput,
+  getSearchedUsers,
+}) {
   return (
     <div
       className="flex items-center gap-3 p-3 cursor-pointer"
@@ -8,6 +13,9 @@ function UserCard({ user, setAddExpenseWith }) {
         setAddExpenseWith((prev) => {
           return [...prev, user];
         });
+        searchUsersInput.current.focus();
+        searchUsersInput.current.value = '';
+        getSearchedUsers(searchUsersInput.current.value);
       }}
     >
       <div className="w-11 h-11 flex items-center justify-center rounded-full bg-accentBorder">

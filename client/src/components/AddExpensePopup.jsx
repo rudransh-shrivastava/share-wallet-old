@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import usePopup from '../context/popup';
 import axios from 'axios';
 import UserCard from './UserCard';
@@ -15,56 +15,38 @@ function AddExpensePopup() {
         const searchedFriends = userFriends.filter((user) =>
           user.name.toLowerCase().includes(query.toLowerCase())
         );
-        setSearchedUsers(searchedFriends);
+        setSearchedUsers(filterSearchedUsers(searchedFriends));
       });
   };
-
+  const filterSearchedUsers = (searchedUsers) => {
+    return searchedUsers.filter((user) => {
+      return !addExpenseWith.find((addExpenseWithUser) => {
+        return addExpenseWithUser.id === user.id;
+      });
+    });
+  };
+  const searchUsersInput = useRef(null);
   const { setShowAddExpensePopup } = usePopup();
   const [addExpenseWith, setAddExpenseWith] = useState([]);
-  const [serachedUsers, setSearchedUsers] = useState([]);
+  const [searchedUsers, setSearchedUsers] = useState([]);
   useEffect(() => {
     getSearchedUsers('');
-    console.log('run useEffect');
   }, []);
-  const [showSearchedUsers, setShowSearchedUsers] = useState(false);
   const [expenseTime, setExpenseTime] = useState(new Date());
   return (
     <div className="fixed inset-0 flex items-center justify-center">
-      <div
-        className="absolute inset-0 backdrop-blur-sm"
-        onClick={() => {
-          setShowAddExpensePopup(false);
-        }}
-      ></div>
+      <div className="absolute inset-0 backdrop-blur-sm"></div>
       <div className="absolute bg-white border-2 border-accentBorder rounded-md w-full sm:max-w-lg">
         <div className="p-4 flex items-center justify-between w-full">
           <span>Add an Expense</span>
-          <button
-            className="h-8 w-8 flex items-center justify-center relative"
-            onClick={() => {
-              setShowAddExpensePopup(false);
-            }}
-          >
+          <button className="h-8 w-8 flex items-center justify-center relative">
             <span className="bg-gray-700 h-1 w-8 absolute rotate-45 rounded-full"></span>
             <span className="bg-gray-700 h-1 w-8 absolute -rotate-45 rounded-full"></span>
           </button>
         </div>
         <form onSubmit={formSubmit} className="p-4">
           <div className="flex flex-col gap-8">
-            <div
-              className="flex gap-2 flex-wrap border-b-2 border-accentBorder relative px-2"
-              onFocus={() => {
-                setShowSearchedUsers(true);
-              }}
-              // NOTE: fix this
-              // TODO: fix this I'm sleepy
-              // TODO: it's complicated but we need to make sure when we unfocus from input the search reasults hide but if we click on one of the search result it should not hide
-              onBlur={(e) => {
-                setTimeout(() => {
-                  setShowSearchedUsers(false);
-                }, 500);
-              }}
-            >
+            <div className="flex gap-2 flex-wrap border-b-2 border-accentBorder relative px-2 group">
               <div className="leading-10">With You and</div>
               {/* one line is 2.5rem in height */}
               <div className="flex flex-wrap">
@@ -79,9 +61,7 @@ function AddExpensePopup() {
                       className="size-6 bg-white rounded-full relative flex items-center justify-center"
                       onClick={(e) => {
                         e.preventDefault();
-                        console.log('hii');
                         setAddExpenseWith((addExpenseWith) => {
-                          console.log(addExpenseWith);
                           return addExpenseWith.filter((friend) => {
                             return friend.id !== user.id;
                           });
@@ -98,31 +78,25 @@ function AddExpensePopup() {
                 type="text"
                 placeholder="Enter Name"
                 className="bg-white border-none outline-none p-2"
+                ref={searchUsersInput}
                 onChange={(e) => {
                   getSearchedUsers(e.target.value);
                 }}
               />
-              {showSearchedUsers && (
-                <div className="flex flex-col w-full max-h-[50vh] overflow-auto absolute top-full left-0 right-0 bg-white divide-y-2 divide-accentBorder border-2 border-accentBorder px-2 rounded-b-lg">
-                  {/* TODO: we need real users here  */}
-                  {serachedUsers.length
-                    ? serachedUsers
-                        .filter((user) => {
-                          return !addExpenseWith.find(
-                            (addExpenseWithUser) =>
-                              addExpenseWithUser.id === user.id
-                          );
-                        })
-                        .map((user) => (
-                          <UserCard
-                            user={user}
-                            setAddExpenseWith={setAddExpenseWith}
-                            key={user.id}
-                          />
-                        ))
-                    : 'No Users found'}
-                </div>
-              )}
+              <div className="hidden group-focus-within:flex hover:flex flex-col w-full max-h-[50vh] overflow-auto absolute top-full left-0 right-0 bg-white divide-y-2 divide-accentBorder border-2 border-accentBorder px-2 rounded-b-lg">
+                {/* TODO: we need real users here  */}
+                {searchedUsers.length
+                  ? searchedUsers.map((user) => (
+                      <UserCard
+                        user={user}
+                        searchUsersInput={searchUsersInput}
+                        setAddExpenseWith={setAddExpenseWith}
+                        getSearchedUsers={getSearchedUsers}
+                        key={user.id}
+                      />
+                    ))
+                  : 'No Users found'}
+              </div>
             </div>
             <input
               type="text"
