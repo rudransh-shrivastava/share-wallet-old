@@ -1,41 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import usePopup from '../context/popup';
 import axios from 'axios';
 import UserCard from './UserCard';
 
-// NOTE: this is temporary it's not exactly where this function will live or will it live or not
-const getSearchedUsers = (query = '') => {
-  const testUser = 'TestUser';
-  let userFriends = axios
-    .get('http://localhost:3001/friends', {
-      params: { testUser },
-    })
-    .then((res) => {
-      userFriends = res.data;
-      console.log(userFriends);
-    });
-  // TODO: Gopal: Return userFriends below, Promise takes time and the below return statement executes, I can't get it working, taking too much time, I'll do something else for now
-  return [
-    { name: 'John Doe', id: 1 },
-    { name: 'Test Doe', id: 2 },
-    { name: 'Jane Smith', id: 3 },
-    { name: 'Jhonny Doe', id: 4 },
-    { name: 'Test Smith', id: 5 },
-    { name: 'Ramesh Smith', id: 6 },
-    { name: 'Rajendra Doe', id: 7 },
-    { name: 'Test Gupta', id: 8 },
-    { name: 'Surya', id: 9 },
-    { name: 'Ravish', id: 10 },
-    { name: 'Rahul', id: 11 },
-    { name: 'Rajeev raja', id: 12 },
-    { name: 'Raj', id: 13 },
-  ].filter((user) => user.name.toLowerCase().includes(query.toLowerCase()));
-};
-
 function AddExpensePopup() {
+  const getSearchedUsers = (query = '') => {
+    const testUser = 'TestUser';
+    let userFriends = axios
+      .get('http://localhost:3001/friends', {
+        params: { testUser },
+      })
+      .then((res) => {
+        userFriends = res.data;
+        const searchedFriends = userFriends.filter((user) =>
+          user.name.toLowerCase().includes(query.toLowerCase())
+        );
+        setSearchedUsers(searchedFriends);
+      });
+  };
+
   const { setShowAddExpensePopup } = usePopup();
   const [addExpenseWith, setAddExpenseWith] = useState([]);
-  const [serachedUsers, setSearchedUsers] = useState([...getSearchedUsers('')]); // TODO: by default it should be some users, may be most frequent or may be all firends
+  const [serachedUsers, setSearchedUsers] = useState([]);
+  useEffect(() => {
+    getSearchedUsers('');
+    console.log('run useEffect');
+  }, []);
   const [showSearchedUsers, setShowSearchedUsers] = useState(false);
   const [expenseTime, setExpenseTime] = useState(new Date());
   return (
@@ -109,7 +99,7 @@ function AddExpensePopup() {
                 placeholder="Enter Name"
                 className="bg-white border-none outline-none p-2"
                 onChange={(e) => {
-                  setSearchedUsers(getSearchedUsers(e.target.value));
+                  getSearchedUsers(e.target.value);
                 }}
               />
               {showSearchedUsers && (

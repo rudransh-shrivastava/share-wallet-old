@@ -37,6 +37,8 @@ app.get('/total', (req, res) => {
 app.get('/friends', (req, res) => {
   const user = req.query.user;
   const friends = [
+    { name: 'Kya backend ne kaha', id: 14 },
+    { name: 'Kya Frontend ne suna', id: 15 },
     { name: 'John Doe', id: 1 },
     { name: 'Test Doe', id: 2 },
     { name: 'Jane Smith', id: 3 },
