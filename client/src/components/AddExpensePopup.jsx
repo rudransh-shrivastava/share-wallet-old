@@ -33,11 +33,21 @@ function AddExpensePopup() {
   const [expenseTime, setExpenseTime] = useState(new Date());
   return (
     <div className="fixed inset-0 flex items-center justify-center">
-      <div className="absolute inset-0 backdrop-blur-sm"></div>
+      <div
+        className="absolute inset-0 backdrop-blur-sm"
+        onClick={() => {
+          setShowAddExpensePopup(false);
+        }}
+      ></div>
       <div className="absolute bg-white border-2 border-accentBorder rounded-md w-full sm:max-w-lg">
         <div className="p-4 flex items-center justify-between w-full">
           <span>Add an Expense</span>
-          <button className="h-8 w-8 flex items-center justify-center relative">
+          <button
+            className="h-8 w-8 flex items-center justify-center relative"
+            onClick={() => {
+              setShowAddExpensePopup(false);
+            }}
+          >
             <span className="bg-gray-700 h-1 w-8 absolute rotate-45 rounded-full"></span>
             <span className="bg-gray-700 h-1 w-8 absolute -rotate-45 rounded-full"></span>
           </button>
