@@ -85,13 +85,13 @@ function AddExpensePopup() {
               <input
                 type="text"
                 placeholder="Enter Name"
-                className="bg-white border-none outline-none p-2"
+                className="bg-white border-none outline-none p-2 peer"
                 ref={searchUsersInput}
                 onChange={(e) => {
                   getSearchedUsers(e.target.value);
                 }}
               />
-              <div className="hidden group-focus-within:flex hover:flex flex-col w-full max-h-[50vh] overflow-auto absolute top-full left-0 right-0 bg-white divide-y-2 divide-accentBorder border-2 border-accentBorder px-2 rounded-b-lg">
+              <div className="hidden peer-focus-within:flex focus-within:flex hover:flex flex-col w-full max-h-[50vh] overflow-auto absolute top-full left-0 right-0 bg-white divide-y-2 divide-accentBorder border-2 border-accentBorder px-2 rounded-b-lg">
                 {/* TODO: we need real users here  */}
                 {searchedUsers.length
                   ? searchedUsers.map((user) => (
