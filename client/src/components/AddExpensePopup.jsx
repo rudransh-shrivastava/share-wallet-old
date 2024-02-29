@@ -29,15 +29,15 @@ function AddExpensePopup() {
     //   })
     //   .catch((err) => console.log(err));
     // NOTE: OLD CODE
-    let userFriends = axios
-      .post('http://localhost:3001/friends', { currentUser })
-      .then((res) => {
-        userFriends = res.data;
-        const searchedFriends = userFriends.filter((user) =>
-          user.name.toLowerCase().includes(query.toLowerCase())
-        );
-        setSearchedUsers(filterSearchedUsers(searchedFriends));
-      });
+    // let userFriends = axios
+    //   .post('http://localhost:3001/friends', { currentUser })
+    //   .then((res) => {
+    //     userFriends = res.data;
+    //     const searchedFriends = userFriends.filter((user) =>
+    //       user.name.toLowerCase().includes(query.toLowerCase())
+    //     );
+    //     setSearchedUsers(filterSearchedUsers(searchedFriends));
+    //   });
   };
   const filterSearchedUsers = (searchedUsers) => {
     return searchedUsers.filter((user) => {
