@@ -11,27 +11,6 @@ module.exports = {
       }
     });
   },
-  createUser: function (req, res) {
-    const { googleId, name, email } = req.body;
-    // Check if a user with the provided googleID already exists
-    User.find().then((users) => {
-      const matchingUser = users.find((user) => user.googleId === googleId);
-      if (matchingUser) {
-        return res.status(401).json({ error: 'User already exists' });
-      } else {
-        // If the user doesn't exist, create a new user
-        const newUser = new User({
-          googleId,
-          name,
-          email,
-        });
-        return newUser
-          .save()
-          .then((user) => res.status(201).json(user))
-          .catch((error) => res.status(400).json({ error: error.message }));
-      }
-    });
-  },
   getTotal: function (req, res) {
     // TODO: Implement getTotal controller logic
     const user = req.query.user;

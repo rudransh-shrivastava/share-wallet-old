@@ -3,7 +3,6 @@ const router = express.Router();
 const userController = require('../controllers/controller');
 const googleAuthController = require('../controllers/googleAuthController');
 
-router.post('/CreateUser', userController.createUser);
 router.get('/total', userController.getTotal);
 router.post('/friends', userController.getFriends);
 router.post('/getDetails', userController.getDetails);
