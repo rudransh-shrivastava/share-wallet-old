@@ -1,24 +1,41 @@
 const { google } = require('googleapis');
-
-const oauth2Client = new google.auth.OAuth2(
+const passport = require('passport');
+const googleAuthClient = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  'http://localhost:3001/oauth2callback'
+  'http://localhost:3001/auth/google/callback'
 );
 
 module.exports = {
-  authorize: function (req, res) {
-    const url = oauth2Client.generateAuthUrl({
-      access_type: 'offline',
-      scope:
-        'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
-    });
-    res.redirect(url);
+  authorize: function (req, res, next) {
+    passport.authenticate('google', {
+      scope: ['profile', 'email'],
+    })(req, res, next);
   },
-  oauth2callback: async function (req, res) {
-    const { code } = req.query;
-    const { tokens } = await oauth2Client.getToken(code);
-    oauth2Client.setCredentials(tokens);
-    res.send('Authentication successful');
+  googleAuthCallback: async function (req, res, next) {
+    passport.authenticate('google', {
+      successRedirect: 'http://localhost:5173',
+      failureRedirect: '/login/failed',
+    })(req, res, next);
+  },
+  googleLogout: function (req, res) {
+    req.logout();
+    res.redirect('/');
+  },
+  success: function (req, res) {
+    if (req.user) {
+      res.status(200).json({
+        success: true,
+        message: 'successful',
+        user: req.user,
+        //cookies: req.cookies
+      });
+    }
+  },
+  failed: function (req, res) {
+    res.status(401).json({
+      success: false,
+      message: 'failed',
+    });
   },
 };

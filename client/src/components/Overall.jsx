@@ -5,7 +5,10 @@ import axios from 'axios';
 const Overall = () => {
   function getUserTotal(user) {
     axios
-      .get('http://localhost:3001/total', { params: { user } })
+      .get('http://localhost:3001/total', {
+        params: { user },
+        withCredentials: true,
+      })
       .then((res) => {
         setOverall({ ...res.data, loaded: true });
       });
