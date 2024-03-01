@@ -15,11 +15,18 @@ const Nav = () => {
           Share Wallet
         </div>
       </div>
-      <a href="http://localhost:3001/auth/google">
-        <button className="bg-white hover:bg-emerald-700 text-accentDark px-4 py-2 rounded-md">
-          Login
-        </button>
-      </a>
+      <div>
+        <a href="http://localhost:3001/auth/google">
+          <button className="bg-white hover:bg-emerald-700 text-accentDark px-4 py-2 rounded-md">
+            Login
+          </button>
+        </a>{' '}
+        <a href="http://localhost:3001/auth/google/logout">
+          <button className="bg-white hover:bg-emerald-700 text-accentDark px-4 py-2 rounded-md">
+            Logout
+          </button>
+        </a>
+      </div>
     </nav>
   );
 };

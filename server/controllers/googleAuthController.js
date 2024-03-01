@@ -12,15 +12,35 @@ module.exports = {
       scope: ['profile', 'email'],
     })(req, res, next);
   },
-  googleAuthCallback: async function (req, res, next) {
-    passport.authenticate('google', {
-      successRedirect: 'http://localhost:5173',
-      failureRedirect: '/login/failed',
+  callback: async function (req, res, next) {
+    passport.authenticate('google', function (err, user, info) {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return res.redirect('/login/failed');
+      }
+      req.logIn(user, function (err) {
+        if (err) {
+          return next(err);
+        }
+        req.session.googleId = user.googleId;
+        console.log(user.googleId, req.session);
+        // Redirect to the success route
+        return res.redirect('http://localhost:5173');
+      });
     })(req, res, next);
   },
-  googleLogout: function (req, res) {
-    req.logout();
-    res.redirect('/');
+  logout: function (req, res, next) {
+    console.log(req.session);
+    req.logout((err) => {
+      if (err) {
+        res.redirect('http://localhost:5173/');
+        return next(err);
+      }
+    });
+    delete req.session.googleId;
+    console.log(req.session);
   },
   success: function (req, res) {
     if (req.user) {
