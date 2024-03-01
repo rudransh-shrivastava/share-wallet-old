@@ -41,7 +41,11 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  // Here you should find the user by id in your database
-  // For now, let's just pass the id
-  done(null, id);
+  User.find().then((users) => {
+    for (const user of users) {
+      if (user.id == id) {
+        done(null, user);
+      }
+    }
+  });
 });

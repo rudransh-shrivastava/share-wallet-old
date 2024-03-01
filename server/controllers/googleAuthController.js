@@ -33,13 +33,13 @@ module.exports = {
   },
   logout: function (req, res, next) {
     console.log(req.session);
-    req.logout((err) => {
+    req.logout(function (err) {
       if (err) {
-        res.redirect('http://localhost:5173/');
         return next(err);
       }
+      res.clearCookie('connect.sid');
+      res.redirect('http://localhost:5173');
     });
-    delete req.session.googleId;
     console.log(req.session);
   },
   success: function (req, res) {
@@ -48,7 +48,7 @@ module.exports = {
         success: true,
         message: 'successful',
         user: req.user,
-        //cookies: req.cookies
+        //cookies: req.cookies // requires cookie-parser middleware to use this, dont need it atm
       });
     }
   },
