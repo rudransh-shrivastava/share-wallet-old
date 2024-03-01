@@ -6,7 +6,6 @@ const Overall = () => {
   function getUserTotal(user) {
     axios
       .get('http://localhost:3001/user/total', {
-        params: { user },
         withCredentials: true,
       })
       .then((res) => {

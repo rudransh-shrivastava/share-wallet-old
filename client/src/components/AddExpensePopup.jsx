@@ -20,9 +20,11 @@ function AddExpensePopup() {
   }, [addExpenseWith]);
 
   const getSearchedUsers = async () => {
-    const userFriendIds = await axios.post(
+    const userFriendIds = await axios.get(
       'http://localhost:3001/user/friends',
-      { withCredentials: true }
+      {
+        withCredentials: true,
+      }
     );
 
     const fetchedFriends = userFriendIds.data;
