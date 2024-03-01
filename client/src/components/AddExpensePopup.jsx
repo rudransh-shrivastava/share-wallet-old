@@ -20,16 +20,15 @@ function AddExpensePopup() {
   }, [addExpenseWith]);
 
   const getSearchedUsers = async () => {
-    const currentUser = '65dccfbf4044f13cbf65d10f';
     const userFriendIds = await axios.post(
       'http://localhost:3001/user/friends',
-      { params: { currentUser }, withCredentials: true }
+      { withCredentials: true }
     );
     const promisesOfFriends = userFriendIds.data.map(async (friend) => {
       const userId = friend.userId;
       const friendDetails = await axios.post(
         'http://localhost:3001/user/details',
-        { params: { userId }, withCredentials: true }
+        { withCredentials: true }
       );
       return friendDetails.data;
     });
