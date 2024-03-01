@@ -6,7 +6,7 @@ import UserCard from './UserCard';
 function AddExpensePopup() {
   const getSearchedUsers = (query = '') => {
     // NOTE: I tried to implement this for a very long time, i cant do this, please do it
-    // TODO: Gopal: see the currentUser below? thats the userId of the currently logged in user, you have to fetch all this friends using /user/friends with parameter {userId} and then oonce you get all his friends, you have to iterate over each friend and get their details individually using /user/getDetails, /user/getDetails requires an ID as the parameter which you will get from /user/friends, and this /user/getDetails returns an object with all the details of the user, you have to get their name from this object and create an array like the one below in OLD CODE Section
+    // TODO: Gopal: see the currentUser below? thats the userId of the currently logged in user, you have to fetch all this friends using /user/friends with parameter {userId} and then oonce you get all his friends, you have to iterate over each friend and get their details individually using /user/details, /user/details requires an ID as the parameter which you will get from /user/friends, and this /user/details returns an object with all the details of the user, you have to get their name from this object and create an array like the one below in OLD CODE Section
     // I dont want to spend more time on this, please do it
     // const currentUser = '65dccfbf4044f13cbf65d10f';
     // // TODO: Gopal: Display this data please
@@ -16,7 +16,7 @@ function AddExpensePopup() {
     //     console.log('Result after /user/friends: ' + JSON.stringify(res.data));
     //     const friendDetailsPromises = res.data.map((friend) => {
     //       return axios
-    //         .post('http://localhost:3001/user/getDetails', {
+    //         .post('http://localhost:3001/user/details', {
     //           friendId: friend.friendId,
     //         })
     //         .then((res) => res.data);

@@ -5,7 +5,7 @@ const googleAuthController = require('../controllers/googleAuthController');
 
 router.get('/user/total', userController.getTotal);
 router.post('/user/friends', userController.getFriends);
-router.post('/user/getDetails', userController.getDetails);
+router.post('/user/details', userController.getDetails);
 router.get('/auth/google', googleAuthController.authorize);
 router.get('/auth/google/callback', googleAuthController.googleAuthCallback);
 router.get('/login/failed', googleAuthController.failed);
