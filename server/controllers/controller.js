@@ -2,6 +2,7 @@ const User = require('../models/Users');
 const Friend = require('../models/Friends');
 
 function ensureAuthenticated(req, res, next) {
+  console.log(req.isAuthenticated());
   if (req.isAuthenticated()) {
     next();
   } else {

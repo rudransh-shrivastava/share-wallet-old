@@ -23,13 +23,13 @@ function AddExpensePopup() {
     const currentUser = '65dccfbf4044f13cbf65d10f';
     const userFriendIds = await axios.post(
       'http://localhost:3001/user/friends',
-      { currentUser }
+      { params: { currentUser }, withCredentials: true }
     );
     const promisesOfFriends = userFriendIds.data.map(async (friend) => {
       const userId = friend.userId;
       const friendDetails = await axios.post(
         'http://localhost:3001/user/details',
-        { userId }
+        { params: { userId }, withCredentials: true }
       );
       return friendDetails.data;
     });
