@@ -201,10 +201,20 @@ const formSubmit = (formData) => {
   (async () => {
     try {
       console.log(formData);
-      const res = await axios.post('http://localhost:3001/addExpense', {
-        withCredentials: true,
-        formData,
-      });
+      const expenseWith = formData.addExpenseWith
+        .map((friend) => friend.googleId)
+        .join(',');
+      const description = formData.description;
+      const amount = formData.amount;
+      const paidBy = formData.paidBy;
+      const expenseTime = formData.expenseTime;
+      const splitType = formData.splitType;
+      const res = await axios.get(
+        `http://localhost:3001/transaction/create?expenseWith=${expenseWith}&description=${description}&amount=${amount}&paidBy=${paidBy}&expenseTime=${expenseTime}&splitType=${splitType}`,
+        {
+          withCredentials: true,
+        }
+      );
       console.log(res);
     } catch (err) {
       console.log(err);
