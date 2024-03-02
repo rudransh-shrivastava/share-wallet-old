@@ -1,7 +1,6 @@
 const Transaction = require('../models/Transactions');
 
 function ensureAuthenticated(req, res, next) {
-  console.log('ensureAuthenticated: ', req.isAuthenticated());
   if (req.isAuthenticated()) {
     next();
   } else {
@@ -17,7 +16,6 @@ module.exports = {
   },
   listTransactions: function (req, res) {
     ensureAuthenticated(req, res, function () {
-      console.log('getUsers: ', req.isAuthenticated());
       const googleId = req.user.googleId; // Get the user's Google ID from the session
     });
   },

@@ -25,14 +25,12 @@ module.exports = {
           return next(err);
         }
         req.session.googleId = user.googleId;
-        console.log(user.googleId, req.session);
         // Redirect to the success route
         return res.redirect('http://localhost:5173');
       });
     })(req, res, next);
   },
   logout: function (req, res, next) {
-    console.log(req.session);
     req.logout(function (err) {
       if (err) {
         return next(err);
@@ -40,7 +38,6 @@ module.exports = {
       res.clearCookie('connect.sid');
       res.redirect('http://localhost:5173');
     });
-    console.log(req.session);
   },
   success: function (req, res) {
     if (req.user) {

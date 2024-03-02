@@ -2,7 +2,6 @@ const User = require('../models/Users');
 const Friend = require('../models/Friends');
 
 function ensureAuthenticated(req, res, next) {
-  console.log('ensureAuthenticated: ', req.isAuthenticated());
   if (req.isAuthenticated()) {
     next();
   } else {
@@ -15,13 +14,11 @@ module.exports = {
     ensureAuthenticated(req, res, function () {
       const googleId = req.user.googleId; // Get the user's Google ID from the session
       const friendId = req.query.friendId;
-      console.log('addFriend: ', friendId);
       // Check if a document with the given userId and friendId already exists
       Friend.findOne({ userId: googleId, friendId: friendId }).then(
         (existingFriend) => {
           if (existingFriend) {
             // If the document exists, log "Already friends" and don't create a new document
-            console.log('Already friends');
             res.json({ message: 'Already friends' });
           } else {
             // If the document doesn't exist, create a new document
@@ -31,7 +28,6 @@ module.exports = {
             });
             newFriend.save().then((friend) => {
               res.json(friend);
-              console.log('Friend added', friend);
             });
           }
         }
@@ -40,17 +36,14 @@ module.exports = {
   },
   getUsers: function (req, res) {
     ensureAuthenticated(req, res, function () {
-      console.log('getUsers: ', req.isAuthenticated());
       const googleId = req.user.googleId; // Get the user's Google ID from the session
       User.find({}, 'name googleId').then((users) => {
-        console.log(users);
         res.json(users);
       });
     });
   },
   getDetails: function (req, res) {
     ensureAuthenticated(req, res, function () {
-      console.log('getDetails: ', req.isAuthenticated());
       const googleId = req.user.googleId; // Get the user's Google ID from the session
       User.find().then((users) => {
         for (const user of users) {
@@ -84,7 +77,6 @@ module.exports = {
         User.find({ googleId: { $in: friendIds } }, 'name googleId').then(
           (users) => {
             res.json(users);
-            console.log(users);
           }
         );
       });
