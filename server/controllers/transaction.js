@@ -52,7 +52,49 @@ module.exports = {
   // TODO: Implement listTransactions controller logic
   listTransactions: function (req, res) {
     ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId; // Get the user's Google ID from the session
+      const googleId = req.user.googleId; // Get the user's Google ID from the sessions
+      let transactionId = 0;
+      let name = '';
+      let amount = 0;
+      let owesMoney = false;
+      let time = 0;
+      let list = [];
+      Transaction.find().then((transactions) => {
+        for (const txn of transactions) {
+          time = txn.createdAt;
+          transactionId = txn._id;
+          if (txn.paidBy == googleId) {
+            owesMoney = true;
+            for (participant of txn.participants) {
+              if (participant.user !== googleId) {
+                name = participant.user;
+                amount = participant.amountOwes;
+                list.push({ transactionId, name, amount, owesMoney, time });
+              }
+            }
+          } else {
+            owesMoney = false;
+            name = txn.paidBy;
+            time = txn.createdAt;
+            id = txn._id;
+            for (const participant of txn.participants) {
+              if (participant.user === googleId) {
+                amount = participant.amountOwes;
+                list.push({ transactionId, name, amount, owesMoney, time });
+              }
+            }
+          }
+        }
+        res.json(list);
+      });
+      const txn = {
+        id: transactionId,
+        name: name,
+        amount: amount,
+        owesMoney: owesMoney,
+        time: time,
+      };
+      console.log(txn);
     });
   },
 };
