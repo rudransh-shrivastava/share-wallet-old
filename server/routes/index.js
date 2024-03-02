@@ -4,6 +4,7 @@ const userController = require('../controllers/controller');
 const googleAuthController = require('../controllers/googleAuthController');
 
 router.get('/user/total', userController.getTotal);
+router.get('/user/users', userController.getUsers);
 router.get('/user/friends', userController.getFriends);
 router.get('/user/details', userController.getDetails);
 router.get('/auth/google', googleAuthController.authorize);

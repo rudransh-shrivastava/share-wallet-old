@@ -139,9 +139,10 @@ async function fetchFriends({ setFetchedFriends, setLoading, setError }) {
     setError(false);
     setLoading(true);
     console.log('before axios');
-    const friendIds = await axios.post('http://localhost:3001/user/friends', {
+    const friendIds = await axios.get('http://localhost:3001/user/users', {
       withCredentials: true,
-    }).data;
+    });
+    console.log(friendIds);
     setFetchedFriends(Array.isArray(friendIds) ? friendIds : []);
     setLoading(false);
   } catch (err) {

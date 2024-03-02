@@ -3,7 +3,7 @@ import { transactions } from '../assets/data.json';
 
 function AddFriend() {
   const [searchQuery, setSearchQuery] = useState('');
-
+  // TODO: Gopal: The /user/users endpoint it working and it retusn an object with {name and googleIds}, use that instead of data.json
   console.log(transactions);
   return (
     <div>

@@ -11,6 +11,16 @@ function ensureAuthenticated(req, res, next) {
 }
 
 module.exports = {
+  getUsers: function (req, res) {
+    ensureAuthenticated(req, res, function () {
+      console.log('getUsers: ', req.isAuthenticated());
+      const googleId = req.user.googleId; // Get the user's Google ID from the session
+      User.find({}, 'name googleId').then((users) => {
+        console.log(users);
+        res.json(users);
+      });
+    });
+  },
   getDetails: function (req, res) {
     ensureAuthenticated(req, res, function () {
       console.log('getDetails: ', req.isAuthenticated());
@@ -40,9 +50,11 @@ module.exports = {
     // TODO: Instead of making a separate request for each friend to get their details, Modify /user/friends endpoint to return all the necessary details in one request.
     ensureAuthenticated(req, res, function () {
       Friend.find().then((users) => {
-        const currentUser = req.user.googleId;
-        const friends = users.filter((user) => user.userId == currentUser);
-        console.log(friends);
+        console.log(users);
+        // const currentUser = req.user.googleId;
+        // const friends = users.filter((user) => user.userId == currentUser);
+        const friends = 'Hello';
+        // console.log(users[0].userId);
         res.json(friends);
       });
     });
