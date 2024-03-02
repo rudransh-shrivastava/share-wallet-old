@@ -84,12 +84,14 @@ async function fetchFriends({ setFetchedFriends, setLoading, setError }) {
 }
 
 async function addFriend(friendId) {
+  console.log('trying to add', friendId);
   try {
-    const addFriendRes = await axios.get('http://localhost:3001/user/add', {
-      withCredentials: true,
-      friendId: friendId,
-    });
-    log(addFriendRes);
+    const addFriendRes = await axios.get(
+      `http://localhost:3001/user/friends/add?friendId=${friendId}`,
+      {
+        withCredentials: true,
+      }
+    );
   } catch (err) {
     console.log(err);
   }
