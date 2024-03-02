@@ -74,15 +74,19 @@ module.exports = {
     });
   },
   getFriends: function (req, res) {
-    // TODO: Instead of making a separate request for each friend to get their details, Modify /user/friends endpoint to return all the necessary details in one request.
     ensureAuthenticated(req, res, function () {
       Friend.find().then((users) => {
-        console.log(users);
-        // const currentUser = req.user.googleId;
-        // const friends = users.filter((user) => user.userId == currentUser);
-        const friends = 'Hello';
-        // console.log(users[0].userId);
-        res.json(friends);
+        const currentUser = req.user.googleId;
+        const friends = users.filter((user) => user.userId == currentUser);
+        const friendIds = friends.map((friend) => friend.friendId);
+
+        // Fetch the names of all friends
+        User.find({ googleId: { $in: friendIds } }, 'name googleId').then(
+          (users) => {
+            res.json(users);
+            console.log(users);
+          }
+        );
       });
     });
   },

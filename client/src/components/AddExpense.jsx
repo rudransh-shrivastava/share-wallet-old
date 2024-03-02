@@ -139,7 +139,7 @@ async function fetchFriends({ setFetchedFriends, setLoading, setError }) {
     setError(false);
     setLoading(true);
     console.log('before axios');
-    const friendIds = await axios.get('http://localhost:3001/user/users', {
+    const friendIds = await axios.get('http://localhost:3001/user/friends', {
       withCredentials: true,
     });
     console.log(friendIds);
