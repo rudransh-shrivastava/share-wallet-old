@@ -11,7 +11,7 @@ function AddExpense() {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState(0);
   const [paidBy, setPaidBy] = useState('me');
-  const [splitType, setSplitType] = useState('splitEqually');
+  const [splitType, setSplitType] = useState('equal');
   const [expenseTime, setExpenseTime] = useState(new Date());
 
   const [fetchedFriends, setFetchedFriends] = useState([]);
@@ -141,7 +141,7 @@ function AddExpense() {
                 </option>
               ))}
             </select>
-            and to be
+            {/* and to be
             <select
               name="splitType"
               id="splitType"
@@ -151,7 +151,7 @@ function AddExpense() {
                 setSplitType(e.target.value);
               }}
             >
-              <option value="splitEqually">Split Equally</option>
+              <option value="equal">Equal</option>
               <option value="paidForMe">Paid for Me</option>
               {addExpenseWith.map((friend) => (
                 <option
@@ -161,7 +161,7 @@ function AddExpense() {
                   Paid for {friend.name}
                 </option>
               ))}
-            </select>
+            </select> */}
           </div>
           <div className="px-2">{expenseTime.toLocaleString()}</div>
           <button
@@ -208,9 +208,8 @@ const formSubmit = (formData) => {
       const amount = formData.amount;
       const paidBy = formData.paidBy;
       const expenseTime = formData.expenseTime;
-      const splitType = formData.splitType;
       const res = await axios.get(
-        `http://localhost:3001/transaction/create?expenseWith=${expenseWith}&description=${description}&amount=${amount}&paidBy=${paidBy}&expenseTime=${expenseTime}&splitType=${splitType}`,
+        `http://localhost:3001/transaction/create?expenseWith=${expenseWith}&description=${description}&amount=${amount}&paidBy=${paidBy}&expenseTime=${expenseTime}`,
         {
           withCredentials: true,
         }
