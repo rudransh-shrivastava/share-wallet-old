@@ -15,19 +15,23 @@ module.exports = {
       const data = req.query;
       let expenseWith = data.expenseWith.split(',');
       expenseWith.push(googleId);
-      console.log(expenseWith, googleId);
       const paidBy = data.paidBy === 'me' ? googleId : data.paidBy;
       const participants = expenseWith.map((user) => {
         let amountPaid = 0;
-        let amountOwed = 0;
+        let amountOwes = 0;
         if (user === paidBy) {
           amountPaid = data.amount;
         } else {
-          amountOwed = data.amount / expenseWith.length;
+          amountOwes = data.amount / expenseWith.length;
+        }
+        let amountOwed = 0;
+        if (user === paidBy) {
+          amountOwed = data.amount - data.amount / expenseWith.length;
         }
         return {
           user: user,
           amountPaid: amountPaid,
+          amountOwes: amountOwes,
           amountOwed: amountOwed,
         };
       });

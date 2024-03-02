@@ -56,7 +56,6 @@ module.exports = {
     });
   },
   getTotal: function (req, res) {
-    // TODO: Implement getTotal controller logic
     ensureAuthenticated(req, res, function () {
       const googleId = req.user.googleId; // Get the user's Google ID from the session
       const user = req.query.user;
@@ -68,8 +67,8 @@ module.exports = {
           transactions.forEach((transaction) => {
             transaction.participants.forEach((participant) => {
               if (participant.user === googleId) {
-                owes += participant.amountOwed;
-                owed += participant.amountPaid;
+                owes += participant.amountOwes;
+                owed += participant.amountOwed;
               }
             });
           });

@@ -20,6 +20,10 @@ const transactionSchema = new mongoose.Schema(
           type: Number,
           default: 0,
         },
+        amountOwes: {
+          type: Number,
+          default: 0,
+        },
         amountOwed: {
           type: Number,
           required: true,
