@@ -24,15 +24,8 @@ function AddExpensePopup() {
       'http://localhost:3001/user/friends',
       { withCredentials: true }
     );
-    const promisesOfFriends = userFriendIds.data.map(async (friend) => {
-      const userId = friend.userId;
-      const friendDetails = await axios.post(
-        'http://localhost:3001/user/details',
-        { withCredentials: true }
-      );
-      return friendDetails.data;
-    });
-    const fetchedFriends = await Promise.all(promisesOfFriends);
+
+    const fetchedFriends = userFriendIds.data;
     setFetchedFriends(fetchedFriends);
     filterFetchedFriends('', fetchedFriends);
   };
