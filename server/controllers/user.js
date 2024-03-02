@@ -46,7 +46,7 @@ module.exports = {
   getDetails: function (req, res) {
     ensureAuthenticated(req, res, function () {
       const googleId = req.user.googleId; // Get the user's Google ID from the session
-      User.find({ id: googleId }).then((user) => {
+      User.find({ googleId: googleId }).then((user) => {
         res.json(user);
       });
     });
