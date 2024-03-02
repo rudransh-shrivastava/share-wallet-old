@@ -13,12 +13,7 @@ const transactionSchema = new mongoose.Schema(
     participants: [
       {
         user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
-          required: true,
-        },
-        sharePercentage: {
-          type: Number,
+          type: String,
           required: true,
         },
         amountPaid: {
@@ -31,6 +26,22 @@ const transactionSchema = new mongoose.Schema(
         },
       },
     ],
+    paidBy: {
+      type: String,
+      required: true,
+    },
+    expenseTime: {
+      type: Date,
+      default: Date.now,
+    },
+    splitType: {
+      type: String,
+      required: true,
+    },
+    createdBy: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
