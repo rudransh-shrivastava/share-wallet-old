@@ -4,56 +4,53 @@ import axios from 'axios';
 import UserCard from './UserCard';
 
 function AddExpensePopup() {
-  const getSearchedUsers = (query = '') => {
-    // NOTE: I tried to implement this for a very long time, i cant do this, please do it
-    // TODO: Gopal: see the currentUser below? thats the userId of the currently logged in user, you have to fetch all this friends using /user/friends with parameter {userId} and then oonce you get all his friends, you have to iterate over each friend and get their details individually using /user/details, /user/details requires an ID as the parameter which you will get from /user/friends, and this /user/details returns an object with all the details of the user, you have to get their name from this object and create an array like the one below in OLD CODE Section
-    // I dont want to spend more time on this, please do it
-    // const currentUser = '65dccfbf4044f13cbf65d10f';
-    // // TODO: Gopal: Display this data please
-    // let userFriends = axios
-    //   .post('http://localhost:3001/user/friends', { currentUser })
-    //   .then((res) => {
-    //     console.log('Result after /user/friends: ' + JSON.stringify(res.data));
-    //     const friendDetailsPromises = res.data.map((friend) => {
-    //       return axios
-    //         .post('http://localhost:3001/user/details', {
-    //           friendId: friend.friendId,
-    //         })
-    //         .then((res) => res.data);
-    //     });
-    //     console.log('friendDetailsPromises: ', friendDetailsPromises);
-    //     return Promise.all(friendDetailsPromises);
-    //   })
-    //   .then((friendDetails) => {
-    //     console.log('Friend details: ' + JSON.stringify(friendDetails));
-    //   })
-    //   .catch((err) => console.log(err));
-    // NOTE: OLD CODE
-    // let userFriends = axios
-    //   .post('http://localhost:3001/user/friends', { currentUser })
-    //   .then((res) => {
-    //     userFriends = res.data;
-    //     const searchedFriends = userFriends.filter((user) =>
-    //       user.name.toLowerCase().includes(query.toLowerCase())
-    //     );
-    //     setSearchedUsers(filterSearchedUsers(searchedFriends));
-    //   });
-  };
-  const filterSearchedUsers = (searchedUsers) => {
-    return searchedUsers.filter((user) => {
-      return !addExpenseWith.find((addExpenseWithUser) => {
-        return addExpenseWithUser.id === user.id;
-      });
-    });
-  };
   const searchUsersInput = useRef(null);
   const { setShowAddExpensePopup } = usePopup();
   const [addExpenseWith, setAddExpenseWith] = useState([]);
-  const [searchedUsers, setSearchedUsers] = useState([]);
-  useEffect(() => {
-    getSearchedUsers(searchUsersInput.current.value);
-  }, [addExpenseWith]);
+  const [searchedFriends, setSearchedFriends] = useState([]);
+  const [fetchedFriends, setFetchedFriends] = useState([]);
   const [expenseTime, setExpenseTime] = useState(new Date());
+
+  useEffect(() => {
+    getSearchedUsers();
+  }, []);
+
+  useEffect(() => {
+    filterFetchedFriends();
+  }, [addExpenseWith]);
+
+  const getSearchedUsers = async () => {
+    const currentUser = '65dccfbf4044f13cbf65d10f';
+    const userFriendIds = await axios.post(
+      'http://localhost:3001/user/friends',
+      { currentUser }
+    );
+    const promisesOfFriends = userFriendIds.data.map(async (friend) => {
+      const userId = friend.userId;
+      const friendDetails = await axios.post(
+        'http://localhost:3001/user/details',
+        { userId }
+      );
+      return friendDetails.data;
+    });
+    const fetchedFriends = await Promise.all(promisesOfFriends);
+    setFetchedFriends(fetchedFriends);
+    filterFetchedFriends('', fetchedFriends);
+  };
+
+  const filterFetchedFriends = (searchQuery = '', fetchedFriendsArg = null) => {
+    const friendsArray = fetchedFriendsArg || fetchedFriends;
+    setSearchedFriends(
+      friendsArray.filter(
+        (friend) =>
+          friend.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+          !addExpenseWith.find((addExpenseWithFriend) => {
+            return addExpenseWithFriend.googleId === friend.googleId;
+          })
+      )
+    );
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center">
       <div
@@ -85,7 +82,7 @@ function AddExpensePopup() {
                   // may be a separate component later
                   <div
                     className="h-8 m-1 bg-accentBorder flex items-center pl-3 pr-1 rounded-full gap-1"
-                    key={user.id}
+                    key={user.googleId}
                   >
                     {user.name}
                     <button
@@ -94,7 +91,7 @@ function AddExpensePopup() {
                         e.preventDefault();
                         setAddExpenseWith((addExpenseWith) => {
                           return addExpenseWith.filter((friend) => {
-                            return friend.id !== user.id;
+                            return friend.googleId !== user.googleId;
                           });
                         });
                       }}
@@ -111,19 +108,18 @@ function AddExpensePopup() {
                 className="bg-white border-none outline-none p-2 peer"
                 ref={searchUsersInput}
                 onChange={(e) => {
-                  getSearchedUsers(e.target.value);
+                  filterFetchedFriends(e.target.value);
                 }}
               />
               <div className="hidden peer-focus-within:flex focus-within:flex hover:flex flex-col w-full max-h-[50vh] overflow-auto absolute top-full left-0 right-0 bg-white divide-y-2 divide-accentBorder border-2 border-accentBorder px-2 rounded-b-lg">
-                {/* TODO: we need real users here  */}
-                {searchedUsers.length
-                  ? searchedUsers.map((user) => (
+                {searchedFriends.length
+                  ? searchedFriends.map((friend) => (
                       <UserCard
-                        user={user}
+                        user={friend}
                         searchUsersInput={searchUsersInput}
                         setAddExpenseWith={setAddExpenseWith}
-                        getSearchedUsers={getSearchedUsers}
-                        key={user.id}
+                        filterFetchedFriends={filterFetchedFriends}
+                        key={friend.googleId}
                       />
                     ))
                   : 'No Users found'}
@@ -143,11 +139,10 @@ function AddExpensePopup() {
             <div className="px-2">
               Paid by{' '}
               <select name="paidBy" id="paidBy" className="p-2 my-1 mx-2">
-                {/* TODO: enter user's id here or however backend says */}
                 <option value="you">You</option>
-                {addExpenseWith.map((user) => (
-                  <option value={user.id} key={user.id}>
-                    {user.name}
+                {addExpenseWith.map((friend) => (
+                  <option value={friend.googleId} key={friend.googleId}>
+                    {friend.name}
                   </option>
                 ))}
               </select>
@@ -160,9 +155,12 @@ function AddExpensePopup() {
               >
                 <option value="splitEqually">Split Equally</option>
                 <option value="paidForMe">Paid for Me</option>
-                {addExpenseWith.map((user) => (
-                  <option value={`paidFor${user.id}`} key={user.id}>
-                    Paid for {user.name}
+                {addExpenseWith.map((friend) => (
+                  <option
+                    value={`paidFor${friend.googleId}`}
+                    key={friend.googleId}
+                  >
+                    Paid for {friend.name}
                   </option>
                 ))}
               </select>

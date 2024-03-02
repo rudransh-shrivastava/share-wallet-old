@@ -4,7 +4,7 @@ function UserCard({
   user,
   setAddExpenseWith,
   searchUsersInput,
-  getSearchedUsers,
+  filterFetchedFriends,
 }) {
   return (
     <div
@@ -15,7 +15,7 @@ function UserCard({
         });
         searchUsersInput.current.focus();
         searchUsersInput.current.value = '';
-        getSearchedUsers(searchUsersInput.current.value);
+        filterFetchedFriends(searchUsersInput.current.value);
       }}
     >
       <div className="w-11 h-11 flex items-center justify-center rounded-full bg-accentBorder">
