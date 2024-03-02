@@ -195,7 +195,6 @@ async function fetchFriends({ setFetchedFriends, setLoading, setError }) {
   }
 }
 
-// TODO: Create endpoint for submitting the form
 const formSubmit = (formData) => {
   console.log('Form has been submitted!');
   (async () => {

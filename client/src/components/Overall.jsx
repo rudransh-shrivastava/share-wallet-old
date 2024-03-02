@@ -15,7 +15,7 @@ const Overall = () => {
 
   const [overall, setOverall] = useState({ loaded: false });
   const { totalBalance, youOwe, youAreOwed } = data.overall;
-  // TODO: make it reload when we change other data
+  // TODO: make it reload when we change other data && remove Gopal from the parameter
   useEffect(() => {
     getUserTotal('Gopal');
   }, []);

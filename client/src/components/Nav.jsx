@@ -18,7 +18,7 @@ const Nav = () => {
       <div className="flex flex-column">
         <div className="mr-2 mt-1 text-2xl text-white">
           Hey! CurrentlyLoggedInUser
-          {/* TODO: Gopal: Change to currently logged in user's name */}
+          {/* TODO: Gopal: Change to currently logged in user's name => fetch from /user/details */}
         </div>
         <a href="http://localhost:3001/auth/google">
           <button className="bg-white hover:bg-emerald-700 text-accentDark px-4 py-2 rounded-md m-1">

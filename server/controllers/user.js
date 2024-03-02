@@ -1,5 +1,6 @@
 const User = require('../models/Users');
 const Friend = require('../models/Friends');
+const Transaction = require('../models/Transactions');
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -59,11 +60,28 @@ module.exports = {
     ensureAuthenticated(req, res, function () {
       const googleId = req.user.googleId; // Get the user's Google ID from the session
       const user = req.query.user;
+      Transaction.find({ 'participants.user': googleId })
+        .then((transactions) => {
+          let owed = 0;
+          let owes = 0;
 
-      const total = -18;
-      const owes = 40;
-      const owed = 22;
-      res.json({ total, owes, owed });
+          transactions.forEach((transaction) => {
+            transaction.participants.forEach((participant) => {
+              if (participant.user === googleId) {
+                owes += participant.amountOwed;
+                owed += participant.amountPaid;
+              }
+            });
+          });
+          const total = owed - owes;
+          res.json({ total, owes, owed });
+        })
+        .catch((err) => {
+          console.error(err);
+          res
+            .status(500)
+            .json({ error: 'An error occurred while fetching transactions' });
+        });
     });
   },
   getFriends: function (req, res) {
