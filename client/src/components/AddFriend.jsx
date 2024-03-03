@@ -7,6 +7,10 @@ function AddFriend() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  useEffect(() => {
+    fetchFriends({ setFetchedFriends, setLoading, setError });
+  }, []);
+
   return (
     <div>
       <form
@@ -75,6 +79,7 @@ async function fetchFriends({ setFetchedFriends, setLoading, setError }) {
       withCredentials: true,
     });
     setFetchedFriends(Array.isArray(friendIds.data) ? friendIds.data : []);
+    console.log(friendIds.data);
     setLoading(false);
   } catch (err) {
     setLoading(false);
