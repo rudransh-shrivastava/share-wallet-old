@@ -6,6 +6,7 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3001;
 const client_url = process.env.CLIENT_URL || 'http://localhost:5173';
+console.log(client_url);
 const dbConfig = require('./config/dbConfig');
 const userRoutes = require('./routes/index');
 const passport = require('passport');
