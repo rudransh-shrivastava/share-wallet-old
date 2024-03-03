@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const client_url = process.env.CLIENT_URL || 'http://localhost:5173';
 const server_url = process.env.SERVER_URL || 'http://localhost:3001';
+console.log(client_url, server_url);
 const { google } = require('googleapis');
 const passport = require('passport');
 const googleAuthClient = new google.auth.OAuth2(
