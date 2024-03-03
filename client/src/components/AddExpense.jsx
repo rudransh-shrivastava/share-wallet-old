@@ -2,8 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import AddedUserTag from './AddedUserTag';
 import UserCard from './UserCard';
+import { usePopupContext } from '../context/popup';
 
 function AddExpense() {
+  const { setShowPopup } = usePopupContext();
+  const closePopup = () => setShowPopup(false);
+
   const [addExpenseWith, setAddExpenseWith] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const searchUsersInput = useRef(null);
@@ -60,7 +64,7 @@ function AddExpense() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          formSubmit(formData);
+          formSubmit(formData, closePopup);
         }}
       >
         <div className="flex flex-col gap-8">
@@ -195,7 +199,7 @@ async function fetchFriends({ setFetchedFriends, setLoading, setError }) {
   }
 }
 
-const formSubmit = (formData) => {
+const formSubmit = (formData, closePopup) => {
   console.log('Form has been submitted!');
   (async () => {
     try {
@@ -217,6 +221,7 @@ const formSubmit = (formData) => {
     } catch (err) {
       console.log(err);
     }
+    closePopup();
   })();
 };
 
