@@ -3,7 +3,7 @@ import data from '../assets/data.json';
 import axios from 'axios';
 const REACT_APP_SERVER_URL =
   import.meta.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
-
+console.log(REACT_APP_SERVER_URL);
 const Overall = () => {
   function getUserTotal(user) {
     axios
