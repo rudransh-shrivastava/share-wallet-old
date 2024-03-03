@@ -12,9 +12,6 @@
       "destination": "/"
     }
   ],
-  "env": {
-    "REACT_APP_SERVER_URL": "@react_app_server_url"
-  },
   "headers": [
     {
       "source": "/(.*)",
