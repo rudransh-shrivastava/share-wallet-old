@@ -3,8 +3,6 @@ import axios from 'axios';
 
 function AddFriend() {
   const [searchQuery, setSearchQuery] = useState('');
-  // TODO: Gopal: The /user/users endpoint it working and it retusn an object with {name and googleIds}, use that instead of data.json
-
   const [fetchedFriends, setFetchedFriends] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -53,7 +51,12 @@ function AddFriend() {
                   {user.name[0]}
                 </div>
                 <span>{user.name}</span>
-                <button className="ml-auto bg-accentDark text-white px-4 py-2 rounded-md">
+                <button
+                  className="ml-auto bg-accentDark text-white px-4 py-2 rounded-md"
+                  onClick={() => {
+                    addFriend(user.googleId);
+                  }}
+                >
                   Add
                 </button>
               </div>
@@ -76,6 +79,18 @@ async function fetchFriends({ setFetchedFriends, setLoading, setError }) {
   } catch (err) {
     setLoading(false);
     setError(true);
+    console.log(err);
+  }
+}
+
+async function addFriend(friendId) {
+  try {
+    const addFriendRes = await axios.get('http://localhost:3001/user/add', {
+      withCredentials: true,
+      friendId: friendId,
+    });
+    log(addFriendRes);
+  } catch (err) {
     console.log(err);
   }
 }
