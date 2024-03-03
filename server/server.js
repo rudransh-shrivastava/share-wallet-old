@@ -4,7 +4,8 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
+const client_url = process.env.CLIENT_URL || 'http://localhost:5173';
 const dbConfig = require('./config/dbConfig');
 const userRoutes = require('./routes/index');
 const passport = require('passport');
@@ -50,7 +51,7 @@ dbConfig.connect();
 app.use(express.json());
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: client_url,
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+const REACT_APP_SERVER_URL =
+  import.meta.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
 
 function AddFriend() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -99,15 +101,18 @@ async function fetchUsers2(
   try {
     setFetchedUsersLoading(showLoading && true);
     setFetchedUsersError(false);
-    const usersPromise = axios.get('http://localhost:3001/user/users', {
+    const usersPromise = axios.get(`${REACT_APP_SERVER_URL}/user/users`, {
       withCredentials: true,
     });
-    const friendsPromise = axios.get('http://localhost:3001/user/friends', {
+    const friendsPromise = axios.get(`${REACT_APP_SERVER_URL}/user/friends`, {
       withCredentials: true,
     });
-    const currentUserPromise = axios.get('http://localhost:3001/user/details', {
-      withCredentials: true,
-    });
+    const currentUserPromise = axios.get(
+      `${REACT_APP_SERVER_URL}/user/details`,
+      {
+        withCredentials: true,
+      }
+    );
     const [users, friends, currentUser] = await Promise.all([
       usersPromise,
       friendsPromise,
@@ -132,7 +137,7 @@ async function fetchUsers2(
 async function addFriend(friendId) {
   try {
     const addFriendRes = await axios.get(
-      `http://localhost:3001/user/friends/add?friendId=${friendId}`,
+      `${REACT_APP_SERVER_URL}/user/friends/add?friendId=${friendId}`,
       {
         withCredentials: true,
       }

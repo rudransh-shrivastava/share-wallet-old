@@ -1,9 +1,13 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+const client_url = process.env.CLIENT_URL || 'http://localhost:5173';
 const { google } = require('googleapis');
 const passport = require('passport');
 const googleAuthClient = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  'http://localhost:3001/auth/google/callback'
+  `${client_url}/auth/google/callback`
 );
 
 module.exports = {
@@ -26,7 +30,7 @@ module.exports = {
         }
         req.session.googleId = user.googleId;
         // Redirect to the success route
-        return res.redirect('http://localhost:5173');
+        return res.redirect(`${client_url}`);
       });
     })(req, res, next);
   },
@@ -36,7 +40,7 @@ module.exports = {
         return next(err);
       }
       res.clearCookie('connect.sid');
-      res.redirect('http://localhost:5173');
+      res.redirect(`${client_url}`);
     });
   },
   success: function (req, res) {

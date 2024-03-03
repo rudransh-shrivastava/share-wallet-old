@@ -3,6 +3,8 @@ import axios from 'axios';
 import AddedUserTag from './AddedUserTag';
 import UserCard from './UserCard';
 import { usePopupContext } from '../context/popup';
+const REACT_APP_SERVER_URL =
+  import.meta.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
 
 function AddExpense() {
   const { setShowPopup } = usePopupContext();
@@ -194,7 +196,7 @@ async function fetchFriends({ setFetchedFriends, setLoading, setError }) {
     setError(false);
     setLoading(true);
     console.log('before axios');
-    const friendIds = await axios.get('http://localhost:3001/user/friends', {
+    const friendIds = await axios.get(`${REACT_APP_SERVER_URL}/user/friends`, {
       withCredentials: true,
     });
     console.log(friendIds.data);
@@ -220,7 +222,7 @@ const formSubmit = (formData, closePopup) => {
       const paidBy = formData.paidBy;
       const expenseTime = formData.expenseTime;
       const res = await axios.get(
-        `http://localhost:3001/transaction/create?expenseWith=${expenseWith}&description=${description}&amount=${amount}&paidBy=${paidBy}&expenseTime=${expenseTime}`,
+        `${REACT_APP_SERVER_URL}/transaction/create?expenseWith=${expenseWith}&description=${description}&amount=${amount}&paidBy=${paidBy}&expenseTime=${expenseTime}`,
         {
           withCredentials: true,
         }

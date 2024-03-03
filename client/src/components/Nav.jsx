@@ -1,4 +1,6 @@
 import React from 'react';
+const REACT_APP_SERVER_URL =
+  import.meta.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
 
 const Nav = () => {
   return (
@@ -20,12 +22,12 @@ const Nav = () => {
           Hey! CurrentlyLoggedInUser
           {/* TODO: Gopal: Change to currently logged in user's name => fetch from /user/details */}
         </div>
-        <a href="http://localhost:3001/auth/google">
+        <a href={`${REACT_APP_SERVER_URL}/auth/google`}>
           <button className="bg-bgPrimary dark:bg-bgPrimary-dark hover:bg-emerald-100  dark:hover:bg-emerald-950  px-4 py-2 rounded-md m-1">
             Login
           </button>
         </a>{' '}
-        <a href="http://localhost:3001/auth/google/logout">
+        <a href={`${REACT_APP_SERVER_URL}/auth/google/logout`}>
           <button className="bg-bgPrimary dark:bg-bgPrimary-dark hover:bg-emerald-100 dark:hover:bg-emerald-950  px-4 py-2 rounded-md m-1">
             Logout
           </button>
