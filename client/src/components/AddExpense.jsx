@@ -3,8 +3,7 @@ import axios from 'axios';
 import AddedUserTag from './AddedUserTag';
 import UserCard from './UserCard';
 import { usePopupContext } from '../context/popup';
-const REACT_APP_SERVER_URL =
-  import.meta.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
+const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 function AddExpense() {
   const { setShowPopup } = usePopupContext();

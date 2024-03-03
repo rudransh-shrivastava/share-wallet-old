@@ -1,6 +1,5 @@
 import React from 'react';
-const REACT_APP_SERVER_URL =
-  import.meta.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
+const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 const Nav = () => {
   return (

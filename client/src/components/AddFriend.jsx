@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-const REACT_APP_SERVER_URL =
-  import.meta.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
+const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 function AddFriend() {
   const [searchQuery, setSearchQuery] = useState('');
