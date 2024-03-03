@@ -2,12 +2,13 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 const client_url = process.env.CLIENT_URL || 'http://localhost:5173';
+const server_url = process.env.SERVER_URL || 'http://localhost:3001';
 const { google } = require('googleapis');
 const passport = require('passport');
 const googleAuthClient = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  `${client_url}/auth/google/callback`
+  `${server_url}/auth/google/callback`
 );
 
 module.exports = {
