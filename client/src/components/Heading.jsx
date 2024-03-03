@@ -1,8 +1,10 @@
 import React from 'react';
-import usePopup from '../context/popup';
+import { usePopupContext } from '../context/popup';
+import AddExpense from './AddExpense';
 
 const DashboardHeading = () => {
-  const { setShowAddExpensePopup } = usePopup();
+  const { setShowPopup, setPopupContent, setPopupTitle } = usePopupContext();
+
   return (
     <div className="flex items-center  p-4">
       <span className="text-xl">Dashboard</span>
@@ -10,7 +12,9 @@ const DashboardHeading = () => {
         <button
           className="bg-accentDark hover:bg-emerald-700 text-white px-4 py-2 rounded-md"
           onClick={() => {
-            setShowAddExpensePopup(true);
+            setPopupTitle('Add Expense');
+            setPopupContent(<AddExpense />);
+            setShowPopup(true);
           }}
         >
           Add Expense

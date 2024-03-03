@@ -15,7 +15,7 @@ function UserCard({
         });
         searchUsersInput.current.focus();
         searchUsersInput.current.value = '';
-        filterFetchedFriends(searchUsersInput.current.value);
+        filterFetchedFriends();
       }}
     >
       <div className="w-11 h-11 flex items-center justify-center rounded-full bg-accentBorder">

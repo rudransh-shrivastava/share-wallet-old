@@ -1,11 +1,16 @@
 import { createContext, useContext } from 'react';
 
 export const PopupContext = createContext({
-  showAddExpensePopup: null,
-  setShowAddExpensePopup: () => {},
+  showPopup: null,
+  setShowPopup: () => {},
+  PopupContent: null,
+  setPopupContent: () => {},
+  popupTitle: '',
+  setPopupTitle: () => {},
 });
 
 export const PopupProvider = PopupContext.Provider;
-export default function usePopup() {
+
+export function usePopupContext() {
   return useContext(PopupContext);
 }

@@ -3,15 +3,27 @@ import './App.css';
 import Dashboard from './components/Dashboard';
 import Nav from './components/Nav';
 import { PopupProvider } from './context/popup';
-import AddExpensePopup from './components/AddExpensePopup';
+import Popup from './components/Popup';
 
 function App() {
-  const [showAddExpensePopup, setShowAddExpensePopup] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [PopupContent, setPopupContent] = useState(null);
+  const [popupTitle, setPopupTitle] = useState('');
+
   return (
-    <PopupProvider value={{ showAddExpensePopup, setShowAddExpensePopup }}>
+    <PopupProvider
+      value={{
+        showPopup,
+        setShowPopup,
+        PopupContent,
+        setPopupContent,
+        popupTitle,
+        setPopupTitle,
+      }}
+    >
       <Nav />
       <Dashboard />
-      {showAddExpensePopup && <AddExpensePopup />}
+      {showPopup && <Popup />}
     </PopupProvider>
   );
 }
