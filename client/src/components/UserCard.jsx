@@ -5,6 +5,7 @@ function UserCard({
   setAddExpenseWith,
   searchUsersInput,
   filterFetchedFriends,
+  searchResultsWrapper,
 }) {
   return (
     <div
@@ -13,8 +14,8 @@ function UserCard({
         setAddExpenseWith((prev) => {
           return [...prev, user];
         });
-        searchUsersInput.current.focus();
         searchUsersInput.current.value = '';
+        searchResultsWrapper.current?.classList.remove('hover:flex');
         filterFetchedFriends();
       }}
     >

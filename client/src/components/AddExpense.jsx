@@ -11,6 +11,7 @@ function AddExpense() {
   const [addExpenseWith, setAddExpenseWith] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const searchUsersInput = useRef(null);
+  const searchResultsWrapper = useRef(null);
   const [searchedFriends, setSearchedFriends] = useState([]);
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState(0);
@@ -86,9 +87,15 @@ function AddExpense() {
               className="w-full bg-white border-none outline-none p-2 peer"
               value={searchQuery}
               ref={searchUsersInput}
+              onFocus={() => {
+                searchResultsWrapper.current?.classList.add('hover:flex');
+              }}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <div className="hidden peer-focus-within:flex focus-within:flex hover:flex flex-col w-full max-h-[50vh] overflow-auto absolute top-full left-0 right-0 bg-white divide-y-2 divide-accentBorder border-2 border-accentBorder px-2 rounded-b-lg">
+            <div
+              className="hidden peer-focus-within:flex focus-within:flex hover:flex flex-col w-full max-h-[50vh] overflow-auto absolute top-full left-0 right-0 bg-white divide-y-2 divide-accentBorder border-2 border-accentBorder px-2 rounded-b-lg"
+              ref={searchResultsWrapper}
+            >
               {searchedFriends.length ? (
                 searchedFriends.map((friend) => (
                   <UserCard
@@ -97,6 +104,7 @@ function AddExpense() {
                     searchUsersInput={searchUsersInput}
                     setAddExpenseWith={setAddExpenseWith}
                     filterFetchedFriends={filterFetchedFriends}
+                    searchResultsWrapper={searchResultsWrapper}
                   />
                 ))
               ) : (
