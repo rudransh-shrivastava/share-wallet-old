@@ -3,13 +3,45 @@ import axios from 'axios';
 
 function AddFriend() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [fetchedFriends, setFetchedFriends] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [fetchedUsers, setFetchedUsers] = useState({
+    data: [],
+    loading: false,
+    error: false,
+  });
+  const [fetchedData, setFetchedData] = useState(false);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [fetchedFriends, setFetchedFriends] = useState({});
+
+  const filterUsers = () => {
+    setFilteredUsers(
+      fetchedUsers.data.filter((user) => {
+        return (
+          !fetchedFriends.data.find((friend) => {
+            return friend.googleId === user.googleId;
+          }) && user.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      })
+    );
+  };
+
+  const fetchData = () => {
+    setFetchedData(false);
+    const fetchPromises = [
+      fetchUsers(setFetchedUsers),
+      fetchFriends(setFetchedFriends),
+    ];
+    Promise.all(fetchPromises).then(() => setFetchedData(true));
+  };
+
+  useEffect(fetchData, []);
 
   useEffect(() => {
-    fetchFriends({ setFetchedFriends, setLoading, setError });
-  }, []);
+    if (fetchedData) filterUsers();
+  }, [fetchedData]);
+
+  useEffect(() => {
+    filterUsers();
+  }, [searchQuery]);
 
   return (
     <div>
@@ -18,9 +50,7 @@ function AddFriend() {
         className="flex"
         onSubmit={(e) => {
           e.preventDefault();
-          fetchFriends({ setFetchedFriends, setLoading, setError });
-          console.log('fetched friends', fetchedFriends);
-          console.log(fetchedFriends);
+          fetchUsers(setFetchedUsers);
         }}
       >
         <input
@@ -42,13 +72,15 @@ function AddFriend() {
         </button>
       </form>
       <div className="min-h-[20svh] max-h-[50svh] overflow-auto border-2 border-accentBorder rounded-md p-2 mt-4 divide-y-2 divide-accentBorder">
-        {error && (
+        {(fetchedUsers.error || fetchedFriends.error) && (
           <div className="p-4 text-center">Something Went Wrong...</div>
         )}
-        {loading && <div className="p-4 text-center">Loading...</div>}
-        {!error &&
-          !loading &&
-          fetchedFriends.map((user, i) => {
+        {(fetchedUsers.loading || fetchedFriends.loading) && (
+          <div className="p-4 text-center">Loading...</div>
+        )}
+        {!fetchedUsers.error &&
+          !fetchedUsers.loading &&
+          filteredUsers.map((user) => {
             return (
               <div key={user.googleId} className="flex items-center gap-3 p-3">
                 <div className="w-11 h-11 flex items-center justify-center rounded-full bg-accentBorder">
@@ -58,7 +90,9 @@ function AddFriend() {
                 <button
                   className="ml-auto bg-accentDark text-white px-4 py-2 rounded-md"
                   onClick={() => {
-                    addFriend(user.googleId);
+                    addFriend(user.googleId).then(() => {
+                      fetchData();
+                    });
                   }}
                 >
                   Add
@@ -71,20 +105,46 @@ function AddFriend() {
   );
 }
 
-async function fetchFriends({ setFetchedFriends, setLoading, setError }) {
+async function fetchUsers(setFetchedUsers) {
   try {
-    setError(false);
-    setLoading(true);
-    const friendIds = await axios.get('http://localhost:3001/user/users', {
+    setFetchedUsers((prevFetchedUsers) => {
+      return { ...prevFetchedUsers, loading: true, error: false };
+    });
+    const friends = await axios.get('http://localhost:3001/user/users', {
       withCredentials: true,
     });
-    setFetchedFriends(Array.isArray(friendIds.data) ? friendIds.data : []);
-    console.log(friendIds.data);
-    setLoading(false);
+    const data = Array.isArray(friends?.data) ? friends.data : [];
+    console.log('fetching users gives: ', data);
+
+    setFetchedUsers((prevFetchedUsers) => {
+      return { ...prevFetchedUsers, loading: false, error: false, data };
+    });
   } catch (err) {
-    setLoading(false);
-    setError(true);
+    setFetchedUsers((prevFetchedUsers) => {
+      return { ...prevFetchedUsers, loading: false, error: true };
+    });
     console.log(err);
+  }
+}
+
+async function fetchFriends(setFetchedFriends) {
+  try {
+    setFetchedFriends((prevFetchedFriends) => {
+      return { ...prevFetchedFriends, loading: true, error: false };
+    });
+    const friends = await axios.get('http://localhost:3001/user/friends', {
+      withCredentials: true,
+    });
+    console.log('fetching friends gives: ', friends.data);
+    const data = Array.isArray(friends?.data) ? friends.data : [];
+    setFetchedFriends((prevFetchedFriends) => {
+      return { ...prevFetchedFriends, loading: false, error: false, data };
+    });
+  } catch (err) {
+    setFetchedFriends((prevFetchedFriends) => {
+      return { ...prevFetchedFriends, loading: false, error: true };
+    });
+    console.log("it's an error: ", err);
   }
 }
 
