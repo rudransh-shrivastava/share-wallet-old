@@ -113,7 +113,13 @@ async function fetchUsers(setFetchedUsers) {
     const friends = await axios.get('http://localhost:3001/user/users', {
       withCredentials: true,
     });
-    const data = Array.isArray(friends?.data) ? friends.data : [];
+    const currentUser = await axios.get('http://localhost:3001/user/details', {
+      withCredentials: true,
+    });
+    let data = Array.isArray(friends?.data) ? friends.data : [];
+    data = data.filter(
+      (user) => user.googleId !== currentUser.data[0].googleId
+    );
     console.log('fetching users gives: ', data);
 
     setFetchedUsers((prevFetchedUsers) => {
