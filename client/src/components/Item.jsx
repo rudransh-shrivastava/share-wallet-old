@@ -7,7 +7,7 @@ const Item = ({ transaction }) => {
       <div>
         <li>
           <div className="flex items-center gap-3 p-3 cursor-pointer">
-            <div className="w-11 h-11 flex items-center justify-center rounded-full bg-accentBorder">
+            <div className="w-11 h-11 flex items-center justify-center rounded-full bg-accentBorder dark:bg-accentBorder-dark">
               {name[0]}
             </div>
             <div className="flex flex-col">

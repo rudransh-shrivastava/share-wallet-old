@@ -11,7 +11,7 @@ const DashboardHeading = () => {
       <span className="text-xl">Dashboard</span>
       <div className="flex gap-2 ml-auto">
         <button
-          className="bg-accentDark hover:bg-emerald-700 text-white px-4 py-2 rounded-md"
+          className="bg-accentDark hover:bg-emerald-700 dark:hover:bg-emerald-500 text-bgPrimary px-4 py-2 rounded-md"
           onClick={() => {
             setPopupTitle('Add Expense');
             setPopupContent(<AddExpense />);
@@ -21,7 +21,7 @@ const DashboardHeading = () => {
           Add Expense
         </button>
         <button
-          className="bg-accentDark hover:bg-emerald-700 text-white px-4 py-2 rounded-md"
+          className="bg-accentDark hover:bg-emerald-700  dark:hover:bg-emerald-500 text-bgPrimary px-4 py-2 rounded-md"
           onClick={() => {
             setPopupTitle('Add Friend');
             setPopupContent(<AddFriend />);

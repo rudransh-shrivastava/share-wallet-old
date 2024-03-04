@@ -69,7 +69,7 @@ function AddExpense() {
         }}
       >
         <div className="flex flex-col gap-8">
-          <div className="flex gap-2 flex-wrap border-b-2 border-accentBorder relative px-2 group">
+          <div className="flex gap-2 flex-wrap border-b-2 border-accentBorder dark:border-accentBorder-dark relative px-2 group">
             <div className="leading-10">With You and</div>
             <div className="flex flex-wrap">
               {addExpenseWith.map((user) => (
@@ -84,7 +84,7 @@ function AddExpense() {
             <input
               type="text"
               placeholder="Enter Name"
-              className="w-full bg-white border-none outline-none p-2 peer"
+              className="w-full bg-bgPrimary dark:bg-bgPrimary-dark border-none outline-none p-2 peer"
               value={searchQuery}
               ref={searchUsersInput}
               onFocus={() => {
@@ -93,7 +93,7 @@ function AddExpense() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             <div
-              className="hidden peer-focus-within:flex focus-within:flex hover:flex flex-col w-full max-h-[50vh] overflow-auto absolute top-full left-0 right-0 bg-white divide-y-2 divide-accentBorder border-2 border-accentBorder px-2 rounded-b-lg"
+              className="hidden peer-focus-within:flex focus-within:flex hover:flex flex-col w-full max-h-[50vh] overflow-auto absolute top-full left-0 right-0 bg-bgPrimary dark:bg-bgPrimary-dark divide-y-2 divide-accentBorder dark:divide-accentBorder-dark border-2 border-accentBorder dark:border-accentBorder-dark px-2 rounded-b-lg"
               ref={searchResultsWrapper}
             >
               {searchedFriends.length ? (
@@ -119,7 +119,7 @@ function AddExpense() {
           <input
             type="text"
             placeholder="Enter Description"
-            className="outline-none w-full border-b-2 border-accentBorder p-2"
+            className="outline-none w-full border-b-2 border-accentBorder dark:border-accentBorder-dark p-2"
             value={description}
             onChange={(e) => {
               setDescription(e.target.value);
@@ -129,7 +129,7 @@ function AddExpense() {
             name="amount"
             type="number"
             placeholder="Enter Amount"
-            className="outline-none w-full border-b-2 border-accentBorder p-2 text-center text-xl"
+            className="outline-none w-full border-b-2 border-accentBorder dark:border-accentBorder-dark p-2 text-center text-xl"
             value={amount}
             onChange={(e) => {
               setAmount(e.target.value);
@@ -179,7 +179,7 @@ function AddExpense() {
           <button
             type="submit"
             value="Submit"
-            className="h-10 w-full rounded-md bg-accentDark text-white"
+            className="h-10 w-full rounded-md bg-accentDark text-bgPrimary"
           >
             Submit
           </button>

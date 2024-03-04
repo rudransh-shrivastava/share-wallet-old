@@ -19,7 +19,7 @@ function UserCard({
         filterFetchedFriends();
       }}
     >
-      <div className="w-11 h-11 flex items-center justify-center rounded-full bg-accentBorder">
+      <div className="w-11 h-11 flex items-center justify-center rounded-full bg-accentBorder dark:bg-accentBorder-dark">
         {user.name[0]}
       </div>
       <div>{user.name}</div>
