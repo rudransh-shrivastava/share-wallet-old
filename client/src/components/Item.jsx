@@ -14,8 +14,8 @@ const Item = ({ transaction }) => {
               <div>{transactionId}</div>
               <div className="text-sm opacity-70">
                 {owesMoney
-                  ? `You owe ${name} \u20B9${amount}`
-                  : `${name} owes you \u20B9${amount}`}
+                  ? `${name} owes you \u20B9${amount}`
+                  : `You owe ${name} \u20B9${amount}`}
               </div>
             </div>
             {/* Call /transaction/delete with id as query */}
