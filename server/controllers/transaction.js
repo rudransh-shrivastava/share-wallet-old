@@ -61,11 +61,11 @@ module.exports = {
       Transaction.find().then((transactions) => {
         for (const txn of transactions) {
           time = txn.createdAt;
-          transactionId = txn._id;
           if (txn.paidBy == googleId) {
             owesMoney = true;
             for (participant of txn.participants) {
               if (participant.user !== googleId) {
+                transactionId = participant._id;
                 name = participant.user;
                 amount = participant.amountOwes;
                 list.push({ transactionId, name, amount, owesMoney, time });
@@ -75,9 +75,9 @@ module.exports = {
             owesMoney = false;
             name = txn.paidBy;
             time = txn.createdAt;
-            id = txn._id;
             for (const participant of txn.participants) {
               if (participant.user === googleId) {
+                transactionId = participant._id;
                 amount = participant.amountOwes;
                 list.push({ transactionId, name, amount, owesMoney, time });
               }
