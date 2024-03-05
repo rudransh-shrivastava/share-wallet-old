@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import Item from './Item';
-import axios from 'axios';
 import LoadingSpinner from './LoadingSpinner';
 import { axiosWithCredentials } from '../axiosWithCredentials';
-const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
+import { usePopupContext } from '../context/popup';
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
   const [transactionLoading, setTransactionLoading] = useState([]);
   const [transactionError, setTransactionError] = useState([]);
+  const { showPopup } = usePopupContext();
 
   useEffect(() => {
-    getTransactions(
-      setTransactions,
-      setTransactionLoading,
-      setTransactionError
-    );
-  }, []);
+    if (!showPopup) {
+      getTransactions(
+        setTransactions,
+        setTransactionLoading,
+        setTransactionError
+      );
+    }
+  }, [showPopup]);
 
   return (
     <div className="flex flex-col lg:flex-row lg:divide-x-2 lg:divide-y-0 divide-accentBorder dark:divide-accentBorder-dark divide-y-2">
@@ -26,11 +28,15 @@ const Transactions = () => {
         </div>
         <ul className="divide-y-2 divide-accentBorder dark:divide-accentBorder-dark max-h-[70svh] overflow-auto m-4">
           {transactionLoading && <LoadingSpinner />}
-          {transactions
-            .filter((transaction) => transaction.owesMoney)
-            .map((transaction) => (
-              <Item key={transaction.transactionId} transaction={transaction} />
-            ))}
+          {!transactionLoading &&
+            transactions
+              .filter((transaction) => transaction.owesMoney)
+              .map((transaction) => (
+                <Item
+                  key={transaction.transactionId}
+                  transaction={transaction}
+                />
+              ))}
         </ul>
       </div>
       <div className="w-full">
@@ -39,11 +45,15 @@ const Transactions = () => {
         </div>
         <ul className="divide-y-2 divide-accentBorder dark:divide-accentBorder-dark max-h-[70svh] overflow-auto p-4">
           {transactionLoading && <LoadingSpinner />}
-          {transactions
-            .filter((transaction) => !transaction.owesMoney)
-            .map((transaction) => (
-              <Item key={transaction.transactionId} transaction={transaction} />
-            ))}
+          {!transactionLoading &&
+            transactions
+              .filter((transaction) => !transaction.owesMoney)
+              .map((transaction) => (
+                <Item
+                  key={transaction.transactionId}
+                  transaction={transaction}
+                />
+              ))}
         </ul>
       </div>
     </div>

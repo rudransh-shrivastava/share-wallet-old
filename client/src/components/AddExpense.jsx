@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 import AddedUserTag from './AddedUserTag';
 import UserCard from './UserCard';
 import { usePopupContext } from '../context/popup';
 import { axiosWithCredentials } from '../axiosWithCredentials';
 import LoadingSpinner from './LoadingSpinner';
-const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 function AddExpense() {
   const { setShowPopup } = usePopupContext();
