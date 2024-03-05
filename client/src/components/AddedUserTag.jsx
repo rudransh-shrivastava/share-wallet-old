@@ -18,8 +18,8 @@ function AddedUserTag({ id, name, setAddExpenseWith }) {
           });
         }}
       >
-        <span className="absolute border border-textPrimary dark:text-textPrimary-dark rounded-full w-4 rotate-45"></span>
-        <span className="absolute border border-textPrimary dark:text-textPrimary-dark rounded-full w-4 -rotate-45"></span>
+        <span className="absolute border border-textPrimary dark:border-textPrimary-dark rounded-full w-4 rotate-45"></span>
+        <span className="absolute border border-textPrimary dark:border-textPrimary-dark rounded-full w-4 -rotate-45"></span>
       </button>
     </div>
   );

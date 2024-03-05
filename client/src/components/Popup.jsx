@@ -5,7 +5,7 @@ function Popup() {
   const { setShowPopup, PopupContent, popupTitle } = usePopupContext();
   const closePopup = () => setShowPopup(false);
   return (
-    <div className="fixed inset-0 flex items-center justify-center">
+    <div className="fixed inset-0 flex items-center justify-center m-2">
       <div
         className="absolute inset-0 backdrop-blur-sm"
         onClick={closePopup}
