@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Item from './Item';
-import data from '../assets/data.json';
 import axios from 'axios';
 const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
@@ -24,6 +23,9 @@ const Transactions = () => {
           You Owe
         </div>
         <ul className="divide-y-2 divide-accentBorder dark:divide-accentBorder-dark max-h-[70svh] overflow-auto m-4">
+          {transactionLoading && (
+            <div className="rounded-full mx-auto size-6 border-2 border-accentBorder dark:border-accentBorder border-b-accentDark dark:border-b-accentDark animate-spin"></div>
+          )}
           {transactions
             .filter((transaction) => transaction.owesMoney)
             .map((transaction) => (
@@ -36,6 +38,9 @@ const Transactions = () => {
           You are Owed
         </div>
         <ul className="divide-y-2 divide-accentBorder dark:divide-accentBorder-dark max-h-[70svh] overflow-auto p-4">
+          {transactionLoading && (
+            <div className="rounded-full mx-auto size-6 border-2 border-accentBorder dark:border-accentBorder border-b-accentDark dark:border-b-accentDark animate-spin"></div>
+          )}
           {transactions
             .filter((transaction) => !transaction.owesMoney)
             .map((transaction) => (
