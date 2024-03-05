@@ -11,6 +11,21 @@ function ensureAuthenticated(req, res, next) {
 }
 
 module.exports = {
+  removeFriend: function (req, res) {
+    ensureAuthenticated(req, res, function () {
+      const googleId = req.user.googleId; // Get the user's Google ID from the session
+      const friendId = req.query.friendId;
+      Friend.deleteOne({ userId: googleId, friendId: friendId }).then(
+        (result) => {
+          Friend.deleteOne({ userId: friendId, friendId: googleId }).then(
+            (result) => {
+              res.json(result);
+            }
+          );
+        }
+      );
+    });
+  },
   addFriend: function (req, res) {
     ensureAuthenticated(req, res, function () {
       const googleId = req.user.googleId; // Get the user's Google ID from the session
@@ -22,13 +37,19 @@ module.exports = {
             // If the document exists, log "Already friends" and don't create a new document
             res.json({ message: 'Already friends' });
           } else {
-            // If the document doesn't exist, create a new document
+            // If the document doesn't exist, create 2 new documents
             const newFriend = new Friend({
               userId: googleId,
               friendId: friendId,
             });
             newFriend.save().then((friend) => {
-              res.json(friend);
+              const newFriendBack = new Friend({
+                userId: friendId,
+                friendId: googleId,
+              });
+              newFriendBack.save().then((friend) => {
+                res.json(friend);
+              });
             });
           }
         }

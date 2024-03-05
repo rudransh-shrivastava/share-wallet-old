@@ -146,8 +146,16 @@ async function addFriend(friendId) {
 }
 
 async function removeFriend(friendId) {
-  console.log('trying to remove', friendId);
-  console.log("can't remove friends yet, sorry!");
+  try {
+    const removeFriendRes = await axios.get(
+      `${REACT_APP_SERVER_URL}/user/friends/remove?friendId=${friendId}`,
+      {
+        withCredentials: true,
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 export default AddFriend;

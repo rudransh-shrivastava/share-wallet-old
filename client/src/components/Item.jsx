@@ -1,5 +1,4 @@
 import React from 'react';
-
 const Item = ({ transaction }) => {
   const { transactionId, name, amount, owesMoney } = transaction;
   return (
@@ -11,6 +10,7 @@ const Item = ({ transaction }) => {
               {name[0]}
             </div>
             <div className="flex flex-col">
+              {/* TODO: Change the title of each transaction to the other persons name */}
               <div>{transactionId}</div>
               <div className="text-sm opacity-70">
                 {owesMoney
@@ -18,6 +18,7 @@ const Item = ({ transaction }) => {
                   : `${name} owes you \u20B9${amount}`}
               </div>
             </div>
+            {/* Call /transaction/delete with id as query */}
             <button className="ml-auto">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
