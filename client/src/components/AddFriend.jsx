@@ -79,7 +79,7 @@ function AddFriend() {
                   }}
                 >
                   {user.isLoading && (
-                    <div className="rounded-full size-6 border-2 border-accentBase border-b-accentBorder dark:border-b-accentBorder-dark animate-spin"></div>
+                    <div className="rounded-full size-6 border-2 border-accentBase border-b-accentBorder dark:border-b-textPrimary-dark animate-spin"></div>
                   )}
                   {!user.isLoading && (user.isFriend ? 'Remove' : 'Add')}
                 </button>
