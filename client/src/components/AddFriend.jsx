@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import LoadingSpinner from './LoadingSpinner';
 const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 function AddFriend() {
@@ -78,9 +79,7 @@ function AddFriend() {
                     );
                   }}
                 >
-                  {user.isLoading && (
-                    <div className="rounded-full size-6 border-2 border-accentBase border-b-accentBorder dark:border-b-textPrimary-dark animate-spin"></div>
-                  )}
+                  {user.isLoading && <LoadingSpinner />}
                   {!user.isLoading && (user.isFriend ? 'Remove' : 'Add')}
                 </button>
               </div>

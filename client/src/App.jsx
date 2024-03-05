@@ -3,6 +3,7 @@ import './App.css';
 import Dashboard from './components/Dashboard';
 import Nav from './components/Nav';
 import { PopupProvider } from './context/popup';
+import { UserProvider } from './context/user';
 import Popup from './components/Popup';
 
 function App() {
@@ -10,21 +11,36 @@ function App() {
   const [PopupContent, setPopupContent] = useState(null);
   const [popupTitle, setPopupTitle] = useState('');
 
+  const [user, setUser] = useState(null);
+  const [userLoading, setUserLoading] = useState(false);
+  const [userError, setUserError] = useState(false);
+
   return (
-    <PopupProvider
+    <UserProvider
       value={{
-        showPopup,
-        setShowPopup,
-        PopupContent,
-        setPopupContent,
-        popupTitle,
-        setPopupTitle,
+        user,
+        setUser,
+        userLoading,
+        setUserLoading,
+        userError,
+        setUserError,
       }}
     >
-      <Nav />
-      <Dashboard />
-      {showPopup && <Popup />}
-    </PopupProvider>
+      <PopupProvider
+        value={{
+          showPopup,
+          setShowPopup,
+          PopupContent,
+          setPopupContent,
+          popupTitle,
+          setPopupTitle,
+        }}
+      >
+        <Nav />
+        <Dashboard />
+        {showPopup && <Popup />}
+      </PopupProvider>
+    </UserProvider>
   );
 }
 

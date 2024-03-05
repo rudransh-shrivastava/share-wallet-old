@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useUserContext } from '../context/user';
 const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 const Nav = () => {
-  const [userDetails, setUserDetails] = useState(null);
-  const [userDetailsLoading, setUserDetailsLoading] = useState(false);
-  const [userDetailsError, setUserDetailsError] = useState(false);
+  const {
+    user,
+    setUser,
+    userLoading,
+    setUserLoading,
+    userError,
+    setUserError,
+  } = useUserContext();
   const [showUserDetailsPane, setShowUserDetailsPane] = useState(false);
 
   useEffect(() => {
-    getUserDetails(setUserDetails, setUserDetailsLoading, setUserDetailsError);
+    getUserDetails(setUser, setUserLoading, setUserError);
   }, []);
   useEffect(() => {
-    console.log(userDetails);
-  }, [userDetails]);
+    console.log(user);
+  }, [user]);
   return (
     <nav className="border-b-2 border-accentBorder dark:border-accentBorder-dark">
       <div className="relative container mx-auto flex py-4 justify-between px-2">
@@ -30,14 +36,14 @@ const Nav = () => {
           </div>
         </div>
         <div className="flex flex-column">
-          {!userDetails && (
+          {!user && !userLoading && (
             <a href={`${REACT_APP_SERVER_URL}/auth/google`}>
               <button className="bg-accentDark dark:bg-accentDark-darkhover:bg-emerald-700  dark:hover:bg-emerald-500 px-4 py-2 rounded-md m-1">
                 Login
               </button>
             </a>
           )}
-          {userDetails && (
+          {user && (
             <button
               className={`w-11 h-11 flex items-center justify-center rounded-full bg-accentDark dark:bg-accentDark ${
                 showUserDetailsPane
@@ -46,13 +52,13 @@ const Nav = () => {
               }`}
               onClick={() => setShowUserDetailsPane((prev) => !prev)}
             >
-              {userDetails.name[0]}
+              {user.name[0]}
             </button>
           )}
-          {userDetails && showUserDetailsPane && (
+          {user && showUserDetailsPane && (
             <div className="absolute top-full right-0 rounded-md translate-y-2 bg-red-500 bg-bgPrimary dark:bg-bgPrimary-dark border-2 border-accentBorder dark:border-accentBorder-dark p-2 flex flex-col gap-2 items-center">
               <span>Hey There, You are Logged in as</span>
-              <span>{userDetails?.name}</span>
+              <span>{user?.name}</span>
               <a href={`${REACT_APP_SERVER_URL}/auth/google/logout`}>
                 <button className="bg-accentDark dark:bg-accentDark-darkhover:bg-emerald-700  dark:hover:bg-emerald-500 px-4 py-2 rounded-md">
                   Logout
@@ -67,27 +73,24 @@ const Nav = () => {
 };
 export default Nav;
 
-async function getUserDetails(
-  setUserDetails,
-  setUserDetailsLoading,
-  setUserDetailsError
-) {
+async function getUserDetails(setUser, setUserLoading, setUserError) {
   let res = null;
-  setUserDetailsError((prevError) => false);
+  setUserError((prevError) => false);
   try {
-    setUserDetailsLoading(true);
+    setUserLoading(true);
     res = await axios.get(`${REACT_APP_SERVER_URL}/user/details`, {
       withCredentials: true,
     });
     if (res?.data) {
-      setUserDetails(res.data[0]);
+      setUser(res.data[0]);
     } else {
-      setUserDetails(null);
+      setUser(null);
     }
-    setUserDetailsLoading(false);
+    setUserLoading(false);
   } catch (err) {
     console.log("Couldn't Authenticate", err);
-    setUserDetails(null);
-    setUserDetailsError(true);
+    setUser(null);
+    setUserLoading(false);
+    setUserError(true);
   }
 }
