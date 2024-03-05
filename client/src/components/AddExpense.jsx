@@ -69,7 +69,6 @@ function AddExpense() {
       };
     });
   }, [addExpenseWith, expenseTime, description, amount, paidBy, splitType]);
-  console.log(submitResLoading);
 
   return (
     <div>

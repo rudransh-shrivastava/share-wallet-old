@@ -13,6 +13,7 @@ module.exports = {
     ensureAuthenticated(req, res, function () {
       const googleId = req.user.googleId; // Get the user's Google ID from the session
       const transactionId = req.query.transactionId;
+      console.log(transactionId);
       Transaction.deleteOne({ _id: transactionId }).then((result) => {
         res.json(result);
       });
@@ -71,7 +72,6 @@ module.exports = {
         for (const txn of transactions) {
           time = txn.createdAt;
           transactionId = txn._id;
-          console.log(transactionId);
           if (txn.paidBy == googleId) {
             owesMoney = true;
             for (participant of txn.participants) {

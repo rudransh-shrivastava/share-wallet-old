@@ -11,7 +11,6 @@ const Item = ({ transaction }) => {
               {name[0]}
             </div>
             <div className="flex flex-col">
-              {/* TODO: Change the title of each transaction to the other persons name */}
               <div>{name}</div>
               <div className="text-sm opacity-70">
                 {owesMoney
@@ -19,13 +18,12 @@ const Item = ({ transaction }) => {
                   : `You owe ${name} \u20B9${amount}`}
               </div>
             </div>
-            {/* Call /transaction/delete with id as query */}
             <button
               className="ml-auto"
               onClick={() => {
                 axiosWithCredentials({
-                  path: '/transaction/delete',
-                  options: { transactionId: transactionId },
+                  path: `/transaction/delete?transactionId=${transactionId}`,
+                  method: 'get',
                 });
               }}
             >
