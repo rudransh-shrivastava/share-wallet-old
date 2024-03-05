@@ -52,7 +52,11 @@ dbConfig.connect();
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'https://share-wallet.vercel.app'],
+    origin: [
+      'http://localhost:5173',
+      'https://share-wallet.vercel.app',
+      'https://rudransh.live',
+    ],
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })
