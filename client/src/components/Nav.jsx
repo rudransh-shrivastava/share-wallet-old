@@ -16,7 +16,7 @@ const Nav = () => {
   }, [userDetails]);
   return (
     <nav className="border-b-2 border-accentBorder dark:border-accentBorder-dark">
-      <div className="relative container mx-auto flex py-4 justify-between">
+      <div className="relative container mx-auto flex py-4 justify-between px-2">
         <div className="flex items-center">
           <div className="mr-4">
             <img

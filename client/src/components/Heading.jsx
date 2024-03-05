@@ -7,9 +7,9 @@ const DashboardHeading = () => {
   const { setShowPopup, setPopupContent, setPopupTitle } = usePopupContext();
 
   return (
-    <div className="flex items-center  p-4">
+    <div className="flex items-center gap-2 p-4 flex-wrap">
       <span className="text-xl">Dashboard</span>
-      <div className="flex gap-2 ml-auto">
+      <div className="flex gap-2 ml-auto flex-wrap">
         <button
           className="bg-accentDark hover:bg-emerald-700 dark:hover:bg-emerald-500 text-bgPrimary px-4 py-2 rounded-md"
           onClick={() => {
