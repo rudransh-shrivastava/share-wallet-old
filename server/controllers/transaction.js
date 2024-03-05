@@ -9,6 +9,16 @@ function ensureAuthenticated(req, res, next) {
 }
 
 module.exports = {
+  deleteTransaction: function (req, res) {
+    ensureAuthenticated(req, res, function () {
+      // const googleId = req.user.googleId; // Get the user's Google ID from the session
+      // const transactionId = req.query.transactionId;
+      // Transaction.deleteOne({ _id: transactionId }).then((result) => {
+      //   res.json(result);
+      // });
+      res.json({ message: 'cannot delete transactions yet' });
+    });
+  },
   createTransaction: function (req, res) {
     ensureAuthenticated(req, res, function () {
       const googleId = req.user.googleId; // Get the user's Google ID from the session

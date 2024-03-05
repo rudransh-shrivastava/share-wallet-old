@@ -12,8 +12,9 @@ router.get('/user/friends', userController.getFriends);
 router.get('/user/friends/add', userController.addFriend);
 router.get('/user/friends/remove', userController.removeFriend);
 
-router.get('/transaction/create', transactionController.createTransaction);
 router.get('/transaction/list', transactionController.listTransactions);
+router.get('/transaction/create', transactionController.createTransaction);
+router.get('/transaction/delete', transactionController.deleteTransaction);
 
 router.get('/auth/google', authenticationController.authorize);
 router.get('/auth/google/callback', authenticationController.callback);
