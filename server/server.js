@@ -57,6 +57,7 @@ app.use(
       'https://share-wallet.vercel.app',
       'https://rudransh.live',
       'https://share-wallet-1.onrender.com/',
+      'http://share-wallet-1.onrender.com/',
     ],
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
