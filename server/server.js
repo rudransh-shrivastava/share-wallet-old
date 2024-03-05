@@ -12,7 +12,6 @@ const userRoutes = require('./routes/index');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 const PassportSetup = require('./config/passport');
-const session = require('express-session');
 
 app.use(
   cookieSession({
@@ -34,15 +33,6 @@ app.use(function (request, response, next) {
   }
   next();
 });
-
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: 'auto', sameSite: 'lax' },
-  })
-);
 
 app.use(passport.initialize());
 app.use(passport.session());
