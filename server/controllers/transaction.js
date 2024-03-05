@@ -1,5 +1,5 @@
 const Transaction = require('../models/Transactions');
-
+const User = require('../models/Users');
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     next();
@@ -11,12 +11,11 @@ function ensureAuthenticated(req, res, next) {
 module.exports = {
   deleteTransaction: function (req, res) {
     ensureAuthenticated(req, res, function () {
-      // const googleId = req.user.googleId; // Get the user's Google ID from the session
-      // const transactionId = req.query.transactionId;
-      // Transaction.deleteOne({ _id: transactionId }).then((result) => {
-      //   res.json(result);
-      // });
-      res.json({ message: 'cannot delete transactions yet' });
+      const googleId = req.user.googleId; // Get the user's Google ID from the session
+      const transactionId = req.query.transactionId;
+      Transaction.deleteOne({ _id: transactionId }).then((result) => {
+        res.json(result);
+      });
     });
   },
   createTransaction: function (req, res) {
@@ -68,26 +67,29 @@ module.exports = {
       let owesMoney = false;
       let time = 0;
       let list = [];
-      Transaction.find().then((transactions) => {
+      Transaction.find().then(async (transactions) => {
         for (const txn of transactions) {
           time = txn.createdAt;
+          transactionId = txn._id;
+          console.log(transactionId);
           if (txn.paidBy == googleId) {
             owesMoney = true;
             for (participant of txn.participants) {
               if (participant.user !== googleId) {
-                transactionId = participant._id;
-                name = participant.user;
+                const user = await User.findOne({ googleId: participant.user });
+                name = user ? user.name : 'Unknown User';
                 amount = participant.amountOwes;
                 list.push({ transactionId, name, amount, owesMoney, time });
               }
             }
           } else {
             owesMoney = false;
-            name = txn.paidBy;
+            const user = await User.findOne({ googleId: txn.paidBy });
+            name = user ? user.name : 'Unknown User';
             time = txn.createdAt;
+            transactionId = txn._id;
             for (const participant of txn.participants) {
               if (participant.user === googleId) {
-                transactionId = participant._id;
                 amount = participant.amountOwes;
                 list.push({ transactionId, name, amount, owesMoney, time });
               }
