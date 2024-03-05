@@ -2,7 +2,7 @@ import axios from 'axios';
 const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 export async function axiosWithCredentials({
-  path = '/',
+  path = '/api/',
   method = 'get',
   setData = () => {},
   setDataLoading = () => {},
