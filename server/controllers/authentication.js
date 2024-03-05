@@ -1,7 +1,7 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
-const client_url = process.env.CLIENT_URL || 'http://localhost:5173';
+const client_url = process.env.CLIENT_URL || 'http://localhost:3001';
 const server_url = process.env.SERVER_URL || 'http://localhost:3001';
 console.log(client_url, server_url);
 const { google } = require('googleapis');

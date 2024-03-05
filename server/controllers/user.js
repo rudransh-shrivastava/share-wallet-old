@@ -3,7 +3,6 @@ const Friend = require('../models/Friends');
 const Transaction = require('../models/Transactions');
 
 function ensureAuthenticated(req, res, next) {
-  console.log(req, res, req.isAuthenticated());
   if (req.isAuthenticated()) {
     next();
   } else {
