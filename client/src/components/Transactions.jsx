@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Item from './Item';
 import axios from 'axios';
 import LoadingSpinner from './LoadingSpinner';
+import { axiosWithCredentials } from '../axiosWithCredentials';
 const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 const Transactions = () => {
@@ -54,25 +55,12 @@ async function getTransactions(
   setTransactionLoading,
   setTransactionError
 ) {
-  let res = null;
-  setTransactionError((prevError) => false);
-  try {
-    setTransactionLoading(true);
-    res = await axios.get(`${REACT_APP_SERVER_URL}/transaction/list`, {
-      withCredentials: true,
-    });
-    console.log(res.data);
-    if (res?.data) {
-      setTransactions(res.data);
-    } else {
-      setTransactions(null);
-    }
-    setTransactionLoading(false);
-  } catch (err) {
-    console.log("Couldn't Authenticate", err);
-    setTransactions(null);
-    setTransactionError(true);
-  }
+  axiosWithCredentials({
+    path: '/transaction/list',
+    setData: setTransactions,
+    setDataLoading: setTransactionLoading,
+    setDataError: setTransactionError,
+  });
 }
 
 export default Transactions;

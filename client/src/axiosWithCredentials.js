@@ -1,0 +1,26 @@
+import axios from 'axios';
+const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
+
+export async function axiosWithCredentials({
+  path = '/',
+  method = 'get',
+  setData = () => {},
+  setDataLoading = () => {},
+  setDataError = () => {},
+}) {
+  setDataError((prevError) => false);
+  setDataLoading((prevLoading) => false);
+  try {
+    setDataLoading((prevLoading) => true);
+    const res = await axios[method](`${REACT_APP_SERVER_URL}${path}`, {
+      withCredentials: true,
+    });
+    setData((prevData) => res?.data);
+    console.log(res.data);
+    setDataLoading((prevLoading) => false);
+  } catch (error) {
+    console.log('There was an Error\n', error);
+    setDataLoading((prevLoading) => false);
+    setDataError((prevError) => true);
+  }
+}

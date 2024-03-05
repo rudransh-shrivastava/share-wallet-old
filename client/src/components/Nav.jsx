@@ -17,9 +17,6 @@ const Nav = () => {
   useEffect(() => {
     getUserDetails(setUser, setUserLoading, setUserError);
   }, []);
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
   return (
     <nav className="border-b-2 border-accentBorder dark:border-accentBorder-dark">
       <div className="relative container mx-auto flex py-4 justify-between px-2">

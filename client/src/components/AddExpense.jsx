@@ -3,6 +3,8 @@ import axios from 'axios';
 import AddedUserTag from './AddedUserTag';
 import UserCard from './UserCard';
 import { usePopupContext } from '../context/popup';
+import { axiosWithCredentials } from '../axiosWithCredentials';
+import LoadingSpinner from './LoadingSpinner';
 const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 function AddExpense() {
@@ -19,6 +21,9 @@ function AddExpense() {
   const [paidBy, setPaidBy] = useState('me');
   const [splitType, setSplitType] = useState('equal');
   const [expenseTime, setExpenseTime] = useState(new Date());
+  const [submitRes, setSubmitRes] = useState({});
+  const [submitResLoading, setSubmitResLoading] = useState(false);
+  const [submitResError, setSubmitResError] = useState(false);
 
   const [fetchedFriends, setFetchedFriends] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -39,7 +44,13 @@ function AddExpense() {
   };
 
   useEffect(() => {
-    fetchFriends({ setFetchedFriends, setLoading, setError });
+    axiosWithCredentials({
+      setData: setFetchedFriends,
+      setDataLoading: setLoading,
+      setDataError: setError,
+      path: '/user/friends',
+      method: 'get',
+    });
   }, []);
 
   useEffect(
@@ -60,13 +71,20 @@ function AddExpense() {
       };
     });
   }, [addExpenseWith, expenseTime, description, amount, paidBy, splitType]);
+  console.log(submitResLoading);
 
   return (
     <div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          formSubmit(formData, closePopup);
+          formSubmit({
+            formData,
+            closePopup,
+            setSubmitRes,
+            setSubmitResLoading,
+            setSubmitResError,
+          });
         }}
       >
         <div className="flex flex-col gap-8">
@@ -182,7 +200,7 @@ function AddExpense() {
             value="Submit"
             className="h-10 w-full rounded-md bg-accentDark text-bgPrimary"
           >
-            Submit
+            {submitResLoading ? <LoadingSpinner /> : 'Submit'}
           </button>
         </div>
       </form>
@@ -190,29 +208,15 @@ function AddExpense() {
   );
 }
 
-async function fetchFriends({ setFetchedFriends, setLoading, setError }) {
-  try {
-    setError(false);
-    setLoading(true);
-    console.log('before axios');
-    const friendIds = await axios.get(`${REACT_APP_SERVER_URL}/user/friends`, {
-      withCredentials: true,
-    });
-    console.log(friendIds.data);
-    setFetchedFriends(Array.isArray(friendIds?.data) ? friendIds.data : []);
-    setLoading(false);
-  } catch (err) {
-    setLoading(false);
-    setError(true);
-    console.log(err);
-  }
-}
-
-const formSubmit = (formData, closePopup) => {
-  console.log('Form has been submitted!');
+const formSubmit = ({
+  formData,
+  closePopup,
+  setSubmitRes,
+  setSubmitResLoading,
+  setSubmitResError,
+}) => {
   (async () => {
     try {
-      console.log(formData);
       const expenseWith = formData.addExpenseWith
         .map((friend) => friend.googleId)
         .join(',');
@@ -220,13 +224,13 @@ const formSubmit = (formData, closePopup) => {
       const amount = formData.amount;
       const paidBy = formData.paidBy;
       const expenseTime = formData.expenseTime;
-      const res = await axios.get(
-        `${REACT_APP_SERVER_URL}/transaction/create?expenseWith=${expenseWith}&description=${description}&amount=${amount}&paidBy=${paidBy}&expenseTime=${expenseTime}`,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(res);
+      await axiosWithCredentials({
+        path: `/transaction/create?expenseWith=${expenseWith}&description=${description}&amount=${amount}&paidBy=${paidBy}&expenseTime=${expenseTime}`,
+        method: 'get',
+        setData: setSubmitRes,
+        setDataLoading: setSubmitResLoading,
+        setDataError: setSubmitResError,
+      });
     } catch (err) {
       console.log(err);
     }
