@@ -51,7 +51,6 @@ module.exports = {
         success: true,
         message: 'successful',
         user: req.user,
-        //cookies: req.cookies // requires cookie-parser middleware to use this, dont need it atm
       });
     }
   },

@@ -28,7 +28,7 @@ module.exports = {
   },
   addFriend: function (req, res) {
     ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId; // Get the user's Google ID from the session
+      const googleId = req.user.googleId;
       const friendId = req.query.friendId;
       // Check if a document with the given userId and friendId already exists
       Friend.findOne({ userId: googleId, friendId: friendId }).then(
@@ -58,7 +58,7 @@ module.exports = {
   },
   getUsers: function (req, res) {
     ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId; // Get the user's Google ID from the session
+      const googleId = req.user.googleId;
       User.find({}, 'name googleId').then((users) => {
         res.json(users);
       });
@@ -66,7 +66,7 @@ module.exports = {
   },
   getDetails: function (req, res) {
     ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId; // Get the user's Google ID from the session
+      const googleId = req.user.googleId;
       User.find({ googleId: googleId }).then((user) => {
         res.json(user);
       });
@@ -74,7 +74,7 @@ module.exports = {
   },
   getTotal: function (req, res) {
     ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId; // Get the user's Google ID from the session
+      const googleId = req.user.googleId;
       const user = req.query.user;
       Transaction.find({ 'participants.user': googleId })
         .then((transactions) => {

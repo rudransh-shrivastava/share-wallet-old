@@ -11,7 +11,7 @@ function ensureAuthenticated(req, res, next) {
 module.exports = {
   deleteTransaction: function (req, res) {
     ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId; // Get the user's Google ID from the session
+      const googleId = req.user.googleId;
       const transactionId = req.query.transactionId;
       console.log(transactionId);
       Transaction.deleteOne({ _id: transactionId }).then((result) => {
@@ -21,7 +21,7 @@ module.exports = {
   },
   createTransaction: function (req, res) {
     ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId; // Get the user's Google ID from the session
+      const googleId = req.user.googleId;
       const data = req.query;
       let expenseWith = data.expenseWith.split(',');
       expenseWith.push(googleId);
@@ -61,7 +61,7 @@ module.exports = {
   },
   listTransactions: function (req, res) {
     ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId; // Get the user's Google ID from the sessions
+      const googleId = req.user.googleId;
       let transactionId = 0;
       let name = '';
       let amount = 0;
