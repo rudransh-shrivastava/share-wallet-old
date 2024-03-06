@@ -60,7 +60,7 @@ module.exports = {
     });
   },
   listTransactions: function (req, res) {
-    ensureAuthenticated(req, res, function () {
+    ensureAuthenticated(req, res, async function () {
       const googleId = req.user.googleId;
       let transactionId = 0;
       let name = '';
@@ -68,6 +68,14 @@ module.exports = {
       let owesMoney = false;
       let time = 0;
       let list = [];
+
+      // Fetch all users and map them by googleId
+      const users = await User.find({});
+      const userMap = users.reduce((map, user) => {
+        map[user.googleId] = user.name;
+        return map;
+      }, {});
+
       Transaction.find().then(async (transactions) => {
         for (const txn of transactions) {
           time = txn.createdAt;
@@ -76,18 +84,14 @@ module.exports = {
             owesMoney = true;
             for (participant of txn.participants) {
               if (participant.user !== googleId) {
-                const user = await User.findOne({ googleId: participant.user });
-                name = user ? user.name : 'Unknown User';
+                name = userMap[participant.user] || 'Unknown User';
                 amount = participant.amountOwes;
                 list.push({ transactionId, name, amount, owesMoney, time });
               }
             }
           } else {
             owesMoney = false;
-            const user = await User.findOne({ googleId: txn.paidBy });
-            name = user ? user.name : 'Unknown User';
-            time = txn.createdAt;
-            transactionId = txn._id;
+            name = userMap[txn.paidBy] || 'Unknown User';
             for (const participant of txn.participants) {
               if (participant.user === googleId) {
                 amount = participant.amountOwes;
