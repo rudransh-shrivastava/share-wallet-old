@@ -1,6 +1,6 @@
 import React from 'react';
 import { axiosWithCredentials } from '../axiosWithCredentials';
-const Item = ({ transaction }) => {
+const TransactionItem = ({ transaction }) => {
   const { transactionId, name, amount, owesMoney } = transaction;
   return (
     <>
@@ -44,4 +44,4 @@ const Item = ({ transaction }) => {
   );
 };
 
-export default Item;
+export default TransactionItem;

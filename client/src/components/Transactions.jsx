@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Item from './Item';
+import TransactionItem from './TransactionItem';
 import LoadingSpinner from './LoadingSpinner';
 import { axiosWithCredentials } from '../axiosWithCredentials';
 import { usePopupContext } from '../context/popup';
@@ -31,9 +31,9 @@ const Transactions = () => {
           {!transactionLoading &&
             transactions
               .filter((transaction) => transaction.owesMoney)
-              .map((transaction) => (
-                <Item
-                  key={transaction.transactionId}
+              .map((transaction, index) => (
+                <TransactionItem
+                  key={transaction.transactionId + `${index}`}
                   transaction={transaction}
                 />
               ))}
@@ -49,7 +49,7 @@ const Transactions = () => {
             transactions
               .filter((transaction) => !transaction.owesMoney)
               .map((transaction) => (
-                <Item
+                <TransactionItem
                   key={transaction.transactionId}
                   transaction={transaction}
                 />

@@ -18,10 +18,9 @@ export async function axiosWithCredentials({
       ...options,
     });
     setData((prevData) => res?.data);
-    console.log(res.data);
     setDataLoading((prevLoading) => false);
   } catch (error) {
-    console.log('There was an Error\n', error);
+    console.log(`There was an Error While fetching ${path}`, error);
     setDataLoading((prevLoading) => false);
     setDataError((prevError) => true);
   }
