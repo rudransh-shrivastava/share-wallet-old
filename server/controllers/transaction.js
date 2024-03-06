@@ -68,6 +68,7 @@ module.exports = {
       let owesMoney = false;
       let time = 0;
       let list = [];
+      let description = '';
 
       // Fetch all users and map them by googleId
       const users = await User.find({});
@@ -80,13 +81,21 @@ module.exports = {
         for (const txn of transactions) {
           time = txn.createdAt;
           transactionId = txn._id;
+          description = txn.description;
           if (txn.paidBy == googleId) {
             owesMoney = true;
             for (participant of txn.participants) {
               if (participant.user !== googleId) {
                 name = userMap[participant.user] || 'Unknown User';
                 amount = participant.amountOwes;
-                list.push({ transactionId, name, amount, owesMoney, time });
+                list.push({
+                  transactionId,
+                  name,
+                  amount,
+                  owesMoney,
+                  description,
+                  time,
+                });
               }
             }
           } else {
@@ -95,7 +104,14 @@ module.exports = {
             for (const participant of txn.participants) {
               if (participant.user === googleId) {
                 amount = participant.amountOwes;
-                list.push({ transactionId, name, amount, owesMoney, time });
+                list.push({
+                  transactionId,
+                  name,
+                  amount,
+                  owesMoney,
+                  description,
+                  time,
+                });
               }
             }
           }
