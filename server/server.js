@@ -1,3 +1,5 @@
+const path = require('path');
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
@@ -12,6 +14,8 @@ const userRoutes = require('./routes/index');
 const passport = require('passport');
 const PassportSetup = require('./config/passport');
 const session = require('express-session');
+
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.use(function (request, response, next) {
   if (request.session && !request.session.regenerate) {
