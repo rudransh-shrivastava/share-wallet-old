@@ -1,4 +1,5 @@
 import React from 'react';
+import { axiosWithCredentials } from '../axiosWithCredentials';
 const Item = ({ transaction }) => {
   const { transactionId, name, amount, owesMoney } = transaction;
   return (
@@ -11,7 +12,7 @@ const Item = ({ transaction }) => {
             </div>
             <div className="flex flex-col">
               {/* TODO: Change the title of each transaction to the other persons name */}
-              <div>{transactionId}</div>
+              <div>{name}</div>
               <div className="text-sm opacity-70">
                 {owesMoney
                   ? `${name} owes you \u20B9${amount}`
@@ -19,7 +20,15 @@ const Item = ({ transaction }) => {
               </div>
             </div>
             {/* Call /transaction/delete with id as query */}
-            <button className="ml-auto">
+            <button
+              className="ml-auto"
+              onClick={() => {
+                axiosWithCredentials({
+                  path: '/transaction/delete',
+                  options: { transactionId: transactionId },
+                });
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="40"

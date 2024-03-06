@@ -7,6 +7,7 @@ export async function axiosWithCredentials({
   setData = () => {},
   setDataLoading = () => {},
   setDataError = () => {},
+  options = {},
 }) {
   setDataError((prevError) => false);
   setDataLoading((prevLoading) => false);
@@ -14,6 +15,7 @@ export async function axiosWithCredentials({
     setDataLoading((prevLoading) => true);
     const res = await axios[method](`${REACT_APP_SERVER_URL}${path}`, {
       withCredentials: true,
+      ...options,
     });
     setData((prevData) => res?.data);
     console.log(res.data);
