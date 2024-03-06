@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useUserContext } from '../context/user';
+import shareWalletLogo from '/shareWalletLogo.jpg';
 const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 const Nav = () => {
@@ -22,11 +23,7 @@ const Nav = () => {
       <div className="relative container mx-auto flex py-4 justify-between px-2">
         <div className="flex items-center">
           <div className="mr-4">
-            <img
-              className="size-12"
-              src="src/sharewallet.jpg"
-              alt="Share Wallet"
-            />
+            <img className="size-12" src={shareWalletLogo} alt="Share Wallet" />
           </div>
           <div className="mr-2 text-3xl text- text-bgPrimary font-bold">
             Share Wallet
