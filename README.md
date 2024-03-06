@@ -1,1 +1,1 @@
-https://share-wallet.vercel.app/
+https://rudransh.live/
