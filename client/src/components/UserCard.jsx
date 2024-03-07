@@ -1,5 +1,5 @@
 import React from 'react';
-import getProfilePicColor from '../getProfilePicColor';
+import ProfilePic from './ProfilePic';
 
 function UserCard({
   user,
@@ -20,12 +20,7 @@ function UserCard({
         filterFetchedFriends();
       }}
     >
-      <div
-        className="w-11 h-11 flex items-center justify-center rounded-full uppercase text-xl text-white"
-        style={{ backgroundColor: getProfilePicColor(user.name) }}
-      >
-        {user.name[0]}
-      </div>
+      <ProfilePic name={user.name} />
       <div>{user.name}</div>
     </div>
   );

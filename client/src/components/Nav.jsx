@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useUserContext } from '../context/user';
 import shareWalletLogo from '/shareWalletLogo.jpg';
 import useLocalStorage from '../context/useLocalStorage';
-import getProfilePicColor from '../getProfilePicColor';
+import ProfilePic from './ProfilePic';
 const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 const Nav = ({ showUserDetailsPane, setShowUserDetailsPane }) => {
@@ -78,18 +78,17 @@ const Nav = ({ showUserDetailsPane, setShowUserDetailsPane }) => {
             )}
             {user && (
               <button
-                className={`w-11 h-11 flex items-center justify-center rounded-full uppercase text-xl text-white ${
+                className={`rounded-full ${
                   showUserDetailsPane
                     ? 'ring-2 ring-textPrimary dark:ring-textPrimary-dark'
                     : ''
                 }`}
-                style={{ backgroundColor: getProfilePicColor(user.name) }}
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowUserDetailsPane((prev) => !prev);
                 }}
               >
-                {user.name[0]}
+                <ProfilePic name={user.name} />
               </button>
             )}
             {user && showUserDetailsPane && (
