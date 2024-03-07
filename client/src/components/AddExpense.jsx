@@ -22,6 +22,7 @@ function AddExpense() {
   const [submitRes, setSubmitRes] = useState({});
   const [submitResLoading, setSubmitResLoading] = useState(false);
   const [submitResError, setSubmitResError] = useState(false);
+  const [triedSubmit, setTriedSubmit] = useState(false);
 
   const [fetchedFriends, setFetchedFriends] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -75,13 +76,21 @@ function AddExpense() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          formSubmit({
-            formData,
-            closePopup,
-            setSubmitRes,
-            setSubmitResLoading,
-            setSubmitResError,
-          });
+          setTriedSubmit(true);
+
+          if (
+            formData.addExpenseWith.length != 0 &&
+            formData.description != '' &&
+            formData.amount > 0
+          ) {
+            formSubmit({
+              formData,
+              closePopup,
+              setSubmitRes,
+              setSubmitResLoading,
+              setSubmitResError,
+            });
+          }
         }}
       >
         <div className="flex flex-col gap-8">
@@ -108,6 +117,13 @@ function AddExpense() {
               }}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
+            <span
+              className={`text-red-500 ${
+                triedSubmit && addExpenseWith.length == 0 ? 'block' : 'hidden'
+              }`}
+            >
+              *At least on name Required
+            </span>
             <div
               className="hidden peer-focus-within:flex focus-within:flex hover:flex flex-col w-full max-h-[50vh] overflow-auto absolute top-full left-0 right-0 bg-bgPrimary dark:bg-bgPrimary-dark divide-y-2 divide-accentBorder dark:divide-accentBorder-dark border-2 border-accentBorder dark:border-accentBorder-dark px-2 rounded-b-lg"
               ref={searchResultsWrapper}
@@ -132,25 +148,43 @@ function AddExpense() {
               )}
             </div>
           </div>
-          <input
-            type="text"
-            placeholder="Enter Description"
-            className="outline-none w-full border-b-2 border-accentBorder dark:border-accentBorder-dark p-2"
-            value={description}
-            onChange={(e) => {
-              setDescription(e.target.value);
-            }}
-          />
-          <input
-            name="amount"
-            type="number"
-            placeholder="Enter Amount"
-            className="outline-none w-full border-b-2 border-accentBorder dark:border-accentBorder-dark p-2 text-center text-xl"
-            value={amount}
-            onChange={(e) => {
-              setAmount(e.target.value);
-            }}
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Enter Description"
+              className="outline-none w-full border-b-2 border-accentBorder dark:border-accentBorder-dark p-2 peer/description"
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+            />
+            <span
+              className={`text-red-500 ${
+                triedSubmit && formData.description == '' ? 'block' : 'hidden'
+              }`}
+            >
+              *Description is Required
+            </span>
+          </div>
+          <div>
+            <input
+              name="amount"
+              type="number"
+              placeholder="Enter Amount"
+              className="outline-none w-full border-b-2 border-accentBorder dark:border-accentBorder-dark p-2 text-center text-xl"
+              value={amount}
+              onChange={(e) => {
+                setAmount(e.target.value);
+              }}
+            />
+            <span
+              className={`text-red-500 ${
+                triedSubmit && formData.amount <= 0 ? 'block' : 'hidden'
+              }`}
+            >
+              *Description is Required
+            </span>
+          </div>
           <div className="px-2">
             Paid by{' '}
             <select
