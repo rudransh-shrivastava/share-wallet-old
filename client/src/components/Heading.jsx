@@ -7,11 +7,11 @@ const DashboardHeading = () => {
   const { setShowPopup, setPopupContent, setPopupTitle } = usePopupContext();
 
   return (
-    <div className="flex items-center gap-2 p-4 flex-wrap">
+    <div className="flex flex-col sm:flex-row gap-8 sm:gap-2 items-center justify-center p-4 flex-wrap">
       <span className="text-xl">Dashboard</span>
-      <div className="flex gap-2 ml-auto flex-wrap">
+      <div className="flex flex-col sm:flex-row items-center gap-2 sm:ml-auto flex-wrap w-full sm:w-auto">
         <button
-          className="bg-accentDark hover:bg-emerald-700 dark:hover:bg-emerald-500 text-bgPrimary px-4 py-2 rounded-md"
+          className="bg-accentDark hover:bg-emerald-700 dark:hover:bg-emerald-500 text-bgPrimary px-4 py-2 rounded-md w-full sm:w-auto"
           onClick={() => {
             setPopupTitle('Add Expense');
             setPopupContent(<AddExpense />);
@@ -21,7 +21,7 @@ const DashboardHeading = () => {
           Add Expense
         </button>
         <button
-          className="bg-accentDark hover:bg-emerald-700  dark:hover:bg-emerald-500 text-bgPrimary px-4 py-2 rounded-md"
+          className="bg-accentDark hover:bg-emerald-700  dark:hover:bg-emerald-500 text-bgPrimary px-4 py-2 rounded-md w-full sm:w-auto"
           onClick={() => {
             setPopupTitle('Add Friend');
             setPopupContent(<ManageFriends />);
