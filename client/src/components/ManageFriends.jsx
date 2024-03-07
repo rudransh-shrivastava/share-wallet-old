@@ -3,7 +3,7 @@ import axios from 'axios';
 import LoadingSpinner from './LoadingSpinner';
 const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
-function AddFriend() {
+function ManageFriends() {
   const [searchQuery, setSearchQuery] = useState('');
   const [fetchedUsers, setFetchedUsers] = useState([]);
   const [fetchedUsersLoading, setFetchedUsersLoading] = useState(false);
@@ -158,4 +158,4 @@ async function removeFriend(friendId) {
   }
 }
 
-export default AddFriend;
+export default ManageFriends;

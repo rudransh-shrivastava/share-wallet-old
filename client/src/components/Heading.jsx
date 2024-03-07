@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePopupContext } from '../context/popup';
 import AddExpense from './AddExpense';
-import AddFriend from './AddFriend';
+import ManageFriends from './ManageFriends';
 
 const DashboardHeading = () => {
   const { setShowPopup, setPopupContent, setPopupTitle } = usePopupContext();
@@ -24,11 +24,11 @@ const DashboardHeading = () => {
           className="bg-accentDark hover:bg-emerald-700  dark:hover:bg-emerald-500 text-bgPrimary px-4 py-2 rounded-md"
           onClick={() => {
             setPopupTitle('Add Friend');
-            setPopupContent(<AddFriend />);
+            setPopupContent(<ManageFriends />);
             setShowPopup(true);
           }}
         >
-          Add Friend
+          Manage Friends
         </button>
       </div>
     </div>
