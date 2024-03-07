@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TransactionItem from './TransactionItem';
 import LoadingSpinner from './LoadingSpinner';
 
 const Transactions = ({ transactions, transactionLoading }) => {
+  useEffect(() => {
+    console.log(transactions);
+  }, [transactions]);
+  const [showDetailsOwesId, setShowDetailsOwesId] = useState(null);
+  const [showDetailsOwedId, setShowDetailsOwedId] = useState(null);
   return (
     <div className="flex flex-col lg:flex-row lg:divide-x-2 lg:divide-y-0 divide-accentBorder dark:divide-accentBorder-dark divide-y-2">
       <div className="w-full">
@@ -17,7 +22,10 @@ const Transactions = ({ transactions, transactionLoading }) => {
               .map((transaction, index) => (
                 <TransactionItem
                   key={transaction.transactionId + `${index}`}
+                  id={transaction.transactionId + `${index}`}
                   transaction={transaction}
+                  setShowDetailsOwesId={setShowDetailsOwesId}
+                  showDetailsOwesId={showDetailsOwesId}
                 />
               ))}
         </ul>
@@ -31,10 +39,13 @@ const Transactions = ({ transactions, transactionLoading }) => {
           {!transactionLoading &&
             transactions
               .filter((transaction) => !transaction.owesMoney)
-              .map((transaction) => (
+              .map((transaction, index) => (
                 <TransactionItem
-                  key={transaction.transactionId}
+                  key={transaction.transactionId + `${index}`}
+                  id={transaction.transactionId + `${index}`}
                   transaction={transaction}
+                  setShowDetailsOwedId={setShowDetailsOwedId}
+                  showDetailsOwedId={showDetailsOwedId}
                 />
               ))}
         </ul>

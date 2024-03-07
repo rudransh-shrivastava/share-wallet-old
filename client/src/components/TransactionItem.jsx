@@ -4,16 +4,49 @@ import LoadingSpinner from './LoadingSpinner';
 import { useDashboardDataContext } from '../context/dashboardData';
 import ProfilePic from './ProfilePic';
 
-const TransactionItem = ({ transaction }) => {
+const TransactionItem = ({
+  transaction,
+  id,
+  setShowDetailsOwesId,
+  showDetailsOwesId,
+  setShowDetailsOwedId,
+  showDetailsOwedId,
+}) => {
   const { getDashboardData } = useDashboardDataContext();
   const { transactionId, name, amount, owesMoney } = transaction;
+  let showDetails = false;
+  if (transaction.owesMoney) {
+    showDetails = showDetailsOwesId === id;
+  } else {
+    showDetails = showDetailsOwedId === id;
+  }
   const [deleteTransactionLoading, setDeleteTransactionLoading] =
     useState(false);
+  const handleClick = () => {
+    if (transaction.owesMoney) {
+      setShowDetailsOwesId((prevShowDetailsOwesId) =>
+        prevShowDetailsOwesId === id ? null : id
+      );
+    } else {
+      setShowDetailsOwedId((prevShowDetailsOwedId) =>
+        prevShowDetailsOwedId === id ? null : id
+      );
+    }
+  };
   return (
     <>
       <div>
-        <li>
-          <div className="flex items-center gap-3 p-3 cursor-pointer">
+        <li
+          className={`${
+            showDetails ? 'bg-accentBorder dark:bg-accentBorder-dark' : ''
+          }`}
+        >
+          <div
+            className="flex items-center gap-3 p-4 cursor-pointer"
+            onClick={() => {
+              handleClick();
+            }}
+          >
             <ProfilePic name={name} />
             <div className="flex flex-col">
               <div>{name}</div>
@@ -24,9 +57,10 @@ const TransactionItem = ({ transaction }) => {
               </div>
             </div>
             <button
-              className="ml-auto"
+              className="ml-auto size-8"
               disabled={deleteTransactionLoading}
-              onClick={async () => {
+              onClick={async (e) => {
+                handleClick();
                 await axiosWithCredentials({
                   path: `/transaction/delete?transactionId=${transactionId}`,
                   method: 'get',
@@ -50,6 +84,23 @@ const TransactionItem = ({ transaction }) => {
               )}
             </button>
           </div>
+          {
+            <div
+              className={`grid transition-all overflow-hidden pb-0 ${
+                showDetails ? 'pb-4' : ''
+              }`}
+              style={{
+                gridTemplateRows: `repeat(1, ${showDetails ? '1fr' : '0fr'})`,
+              }}
+            >
+              <div className="px-4 overflow-hidden">
+                <div className="p-2">{transaction.description}</div>
+                <div className="p-2 pt-0">
+                  Added on {new Date(transaction.time).toLocaleString()}
+                </div>
+              </div>
+            </div>
+          }
         </li>
       </div>
     </>
