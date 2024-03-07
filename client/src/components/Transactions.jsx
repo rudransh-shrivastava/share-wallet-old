@@ -1,25 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import TransactionItem from './TransactionItem';
 import LoadingSpinner from './LoadingSpinner';
-import { axiosWithCredentials } from '../axiosWithCredentials';
-import { usePopupContext } from '../context/popup';
 
-const Transactions = () => {
-  const [transactions, setTransactions] = useState([]);
-  const [transactionLoading, setTransactionLoading] = useState([]);
-  const [transactionError, setTransactionError] = useState([]);
-  const { showPopup } = usePopupContext();
-
-  useEffect(() => {
-    if (!showPopup) {
-      getTransactions(
-        setTransactions,
-        setTransactionLoading,
-        setTransactionError
-      );
-    }
-  }, [showPopup]);
-
+const Transactions = ({ transactions, transactionLoading }) => {
   return (
     <div className="flex flex-col lg:flex-row lg:divide-x-2 lg:divide-y-0 divide-accentBorder dark:divide-accentBorder-dark divide-y-2">
       <div className="w-full">
@@ -59,18 +42,5 @@ const Transactions = () => {
     </div>
   );
 };
-
-async function getTransactions(
-  setTransactions,
-  setTransactionLoading,
-  setTransactionError
-) {
-  axiosWithCredentials({
-    path: '/transaction/list',
-    setData: setTransactions,
-    setDataLoading: setTransactionLoading,
-    setDataError: setTransactionError,
-  });
-}
 
 export default Transactions;

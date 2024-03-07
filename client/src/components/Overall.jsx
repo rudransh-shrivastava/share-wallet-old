@@ -1,20 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { usePopupContext } from '../context/popup';
-import { axiosWithCredentials } from '../axiosWithCredentials';
+import React from 'react';
 import LoadingSpinner from './LoadingSpinner';
 
-const Overall = () => {
-  const { showPopup } = usePopupContext();
-  const [userTotal, setUserTotal] = useState({});
-  const [userTotalLoading, setUserTotalLoading] = useState(false);
-  const [userTotalError, setUserTotalError] = useState(null);
-
-  useEffect(() => {
-    if (!showPopup) {
-      getUserTotal({ setUserTotal, setUserTotalLoading, setUserTotalError });
-    }
-  }, [showPopup]);
-
+const Overall = ({ userTotal, userTotalLoading, userTotalError }) => {
   return (
     <div className="flex flex-wrap w-full justify-center sm:gap-4 md:gap-8 py-2">
       {userTotalError ? 'Something went wrong' : ''}
@@ -53,18 +40,5 @@ const Overall = () => {
     </div>
   );
 };
-
-function getUserTotal({
-  setUserTotal,
-  setUserTotalLoading,
-  setUserTotalError,
-}) {
-  axiosWithCredentials({
-    path: '/user/total',
-    setData: setUserTotal,
-    setDataLoading: setUserTotalLoading,
-    setDataError: setUserTotalError,
-  });
-}
 
 export default Overall;
