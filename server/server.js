@@ -14,6 +14,7 @@ const userRoutes = require('./routes/index');
 const passport = require('passport');
 const PassportSetup = require('./config/passport');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
@@ -37,6 +38,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: { secure: 'auto', sameSite: 'lax' },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+      collectionName: 'sessions',
+    }),
   })
 );
 

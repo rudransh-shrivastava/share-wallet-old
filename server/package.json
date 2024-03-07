@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/rudransh-shrivastava/share-wallet#readme",
   "dependencies": {
+    "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-session": "^1.18.0",
