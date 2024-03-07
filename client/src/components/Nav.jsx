@@ -33,7 +33,7 @@ const Nav = ({ showUserDetailsPane, setShowUserDetailsPane }) => {
     <nav className="border-b-2 border-accentBorder dark:border-accentBorder-dark">
       <div className="relative container mx-auto flex py-4 justify-between px-2 lg:px-10">
         <div className="flex items-center">
-          <div className="mr-4">
+          <div className="mr-2">
             <img className="size-12" src={shareWalletLogo} alt="Share Wallet" />
           </div>
           <div className="mr-2 text-2xl text-textPrimary dark:text-textPrimary-dark font-bold">
@@ -101,7 +101,7 @@ const Nav = ({ showUserDetailsPane, setShowUserDetailsPane }) => {
                 <span>Hey There, You are Logged in as</span>
                 <span>{user?.name}</span>
                 <a href={`${REACT_APP_SERVER_URL}/auth/google/logout`}>
-                  <button className="bg-accentDark dark:bg-accentDark-darkhover:bg-emerald-700  dark:hover:bg-emerald-500 px-4 py-2 rounded-md">
+                  <button className="bg-accentDark dark:bg-accentDark-darkhover:bg-emerald-700  dark:hover:bg-emerald-500 text-bgPrimary dark:text-bgPrimary-dark px-4 py-2 rounded-md">
                     Logout
                   </button>
                 </a>
