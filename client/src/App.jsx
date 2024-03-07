@@ -5,6 +5,7 @@ import Nav from './components/Nav';
 import { PopupProvider } from './context/popup';
 import { UserProvider } from './context/user';
 import Popup from './components/Popup';
+import Footer from './components/Footer';
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
@@ -48,6 +49,7 @@ function App() {
             setShowUserDetailsPane={setShowUserDetailsPane}
           />
           <Dashboard />
+          <Footer />
           {showPopup && <Popup />}
         </div>
       </PopupProvider>
