@@ -19,7 +19,7 @@ const Nav = ({ showUserDetailsPane, setShowUserDetailsPane }) => {
   }, []);
   return (
     <nav className="border-b-2 border-accentBorder dark:border-accentBorder-dark">
-      <div className="relative container mx-auto flex py-4 justify-between px-2">
+      <div className="relative container mx-auto flex py-4 justify-between px-2 lg:px-10">
         <div className="flex items-center">
           <div className="mr-4">
             <img className="size-12" src={shareWalletLogo} alt="Share Wallet" />
@@ -53,7 +53,7 @@ const Nav = ({ showUserDetailsPane, setShowUserDetailsPane }) => {
           )}
           {user && showUserDetailsPane && (
             <div
-              className="absolute top-full right-0 rounded-md translate-y-2 bg-bgPrimary dark:bg-bgPrimary-dark border-2 border-accentBorder dark:border-accentBorder-dark p-2 flex flex-col gap-2 items-center"
+              className="absolute top-full right-10 rounded-md translate-y-2 bg-bgPrimary dark:bg-bgPrimary-dark border-2 border-accentBorder dark:border-accentBorder-dark p-2 flex flex-col gap-2 items-center"
               onClick={(e) => {
                 e.stopPropagation();
               }}

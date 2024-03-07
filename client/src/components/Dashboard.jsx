@@ -50,7 +50,7 @@ function Dashboard() {
 
   return (
     <DashboardDataProvider value={{ getDashboardData }}>
-      <div className="container mx-auto my-8 px-2">
+      <div className="container mx-auto my-8 px-2 lg:px-8">
         {userLoading && <LoadingSpinner />}
         {!userLoading && userError && (
           <div className="text-center text-xl p-10">Please Login</div>
