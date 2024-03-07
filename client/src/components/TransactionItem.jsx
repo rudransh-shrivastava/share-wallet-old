@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { axiosWithCredentials } from '../axiosWithCredentials';
 import LoadingSpinner from './LoadingSpinner';
 import { useDashboardDataContext } from '../context/dashboardData';
+import getProfilePicColor from '../getProfilePicColor';
 
 const TransactionItem = ({ transaction }) => {
   const { getDashboardData } = useDashboardDataContext();
@@ -13,7 +14,10 @@ const TransactionItem = ({ transaction }) => {
       <div>
         <li>
           <div className="flex items-center gap-3 p-3 cursor-pointer">
-            <div className="w-11 h-11 flex items-center justify-center rounded-full bg-accentBorder dark:bg-accentBorder-dark">
+            <div
+              className="w-11 h-11 flex items-center justify-center rounded-full text-white uppercase text-xl"
+              style={{ backgroundColor: getProfilePicColor(transaction.name) }}
+            >
               {name[0]}
             </div>
             <div className="flex flex-col">

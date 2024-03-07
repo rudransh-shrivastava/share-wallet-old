@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import LoadingSpinner from './LoadingSpinner';
+import getProfilePicColor from '../getProfilePicColor';
 const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 function ManageFriends() {
@@ -55,7 +56,12 @@ function ManageFriends() {
               return null;
             return (
               <div key={user.googleId} className="flex items-center gap-3 p-3">
-                <div className="w-11 h-11 flex items-center justify-center rounded-full bg-accentBorder dark:bg-accentBorder-dark">
+                <div
+                  className="w-11 h-11 flex items-center justify-center rounded-full text-xl uppercase"
+                  style={{
+                    backgroundColor: getProfilePicColor(user.name),
+                  }}
+                >
                   {user.name[0]}
                 </div>
                 <span>{user.name}</span>
