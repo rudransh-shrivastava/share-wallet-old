@@ -4,7 +4,7 @@ import { useUserContext } from '../context/user';
 import shareWalletLogo from '/shareWalletLogo.jpg';
 const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
-const Nav = () => {
+const Nav = ({ showUserDetailsPane, setShowUserDetailsPane }) => {
   const {
     user,
     setUser,
@@ -13,7 +13,6 @@ const Nav = () => {
     userError,
     setUserError,
   } = useUserContext();
-  const [showUserDetailsPane, setShowUserDetailsPane] = useState(false);
 
   useEffect(() => {
     getUserDetails(setUser, setUserLoading, setUserError);
@@ -44,13 +43,21 @@ const Nav = () => {
                   ? 'ring-2 ring-textPrimary dark:ring-textPrimary-dark'
                   : ''
               }`}
-              onClick={() => setShowUserDetailsPane((prev) => !prev)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowUserDetailsPane((prev) => !prev);
+              }}
             >
               {user.name[0]}
             </button>
           )}
           {user && showUserDetailsPane && (
-            <div className="absolute top-full right-0 rounded-md translate-y-2 bg-red-500 bg-bgPrimary dark:bg-bgPrimary-dark border-2 border-accentBorder dark:border-accentBorder-dark p-2 flex flex-col gap-2 items-center">
+            <div
+              className="absolute top-full right-0 rounded-md translate-y-2 bg-bgPrimary dark:bg-bgPrimary-dark border-2 border-accentBorder dark:border-accentBorder-dark p-2 flex flex-col gap-2 items-center"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
               <span>Hey There, You are Logged in as</span>
               <span>{user?.name}</span>
               <a href={`${REACT_APP_SERVER_URL}/auth/google/logout`}>

@@ -15,6 +15,8 @@ function App() {
   const [userLoading, setUserLoading] = useState(false);
   const [userError, setUserError] = useState(false);
 
+  const [showUserDetailsPane, setShowUserDetailsPane] = useState(false);
+
   return (
     <UserProvider
       value={{
@@ -36,9 +38,18 @@ function App() {
           setPopupTitle,
         }}
       >
-        <Nav />
-        <Dashboard />
-        {showPopup && <Popup />}
+        <div
+          onClick={() => {
+            setShowUserDetailsPane(false);
+          }}
+        >
+          <Nav
+            showUserDetailsPane={showUserDetailsPane}
+            setShowUserDetailsPane={setShowUserDetailsPane}
+          />
+          <Dashboard />
+          {showPopup && <Popup />}
+        </div>
       </PopupProvider>
     </UserProvider>
   );
