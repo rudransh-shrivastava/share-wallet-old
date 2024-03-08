@@ -13,7 +13,7 @@ const TransactionItem = ({
   showDetailsOwedId,
 }) => {
   const { getDashboardData } = useDashboardDataContext();
-  const { transactionId, name, amount, owesMoney } = transaction;
+  const { transactionId, name, amount, owesMoney, createdBy } = transaction;
   let showDetails = false;
   if (transaction.owesMoney) {
     showDetails = showDetailsOwesId === id;
@@ -96,7 +96,8 @@ const TransactionItem = ({
               <div className="px-4 overflow-hidden">
                 <div className="p-2">{transaction.description}</div>
                 <div className="p-2 pt-0">
-                  Added on {new Date(transaction.time).toLocaleString()}
+                  Added on {new Date(transaction.time).toLocaleString()} by{' '}
+                  {createdBy}
                 </div>
               </div>
             </div>

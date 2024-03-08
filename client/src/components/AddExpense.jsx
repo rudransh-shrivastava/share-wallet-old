@@ -182,7 +182,7 @@ function AddExpense() {
                 triedSubmit && formData.amount <= 0 ? 'block' : 'hidden'
               }`}
             >
-              *Description is Required
+              *Amount should be greater than 0
             </span>
           </div>
           <div className="px-2">
