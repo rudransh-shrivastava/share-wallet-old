@@ -1,20 +1,20 @@
-const path = require('path');
-
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
-const express = require('express');
-const cors = require('cors');
-const app = express();
 const port = process.env.PORT || 3001;
 const client_url = process.env.CLIENT_URL || 'http://localhost:3001';
-console.log(client_url);
-const dbConfig = require('./config/dbConfig');
+const express = require('express');
+const cors = require('cors');
 const userRoutes = require('./routes/index');
 const passport = require('passport');
-const PassportSetup = require('./config/passport');
+const path = require('path');
+const databaseConfig = require('./config/database');
+const sessionConfig = require('./config/session');
+const corsConfig = require('./config/cors');
+const passportConfig = require('./config/passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const app = express();
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
@@ -32,38 +32,15 @@ app.use(function (request, response, next) {
   next();
 });
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: 'auto', sameSite: 'lax' },
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URI,
-      collectionName: 'sessions',
-    }),
-  })
-);
+sessionConfig(app);
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-dbConfig.connect();
+databaseConfig.connect();
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: [
-      'http://localhost:5173',
-      'https://share-wallet.vercel.app',
-      'https://rudransh.live',
-      'https://share-wallet-1.onrender.com',
-      'http://share-wallet-1.onrender.com',
-    ],
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true,
-  })
-);
+corsConfig(app);
 
 app.use('/', userRoutes);
 

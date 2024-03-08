@@ -83,7 +83,7 @@ module.exports = {
     ensureAuthenticated(req, res, function () {
       const googleId = req.user.googleId;
       const transactionId = req.query.transactionId;
-      console.log(transactionId);
+
       Transaction.deleteOne({ _id: transactionId })
         .then((result) => {
           res.json(result);
@@ -112,6 +112,7 @@ module.exports = {
         paidBy,
         googleId
       );
+
       transaction
         .save()
         .then((transaction) => {
