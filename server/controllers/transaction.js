@@ -13,7 +13,8 @@ function ensureAuthenticated(req, res, next) {
 
 // fetch all users and return a map of googleId to name
 async function createUserMap() {
-  const users = await User.find({}).catch((err) => {
+  const users = await User.find({}).catch((error) => {
+    console.log(error);
     res.status(400).json({ error: 'Error fetching users' });
   });
 
@@ -87,7 +88,8 @@ module.exports = {
         .then((result) => {
           res.json(result);
         })
-        .catch((err) => {
+        .catch((error) => {
+          console.log(error);
           res.status(400).json({ error: 'Error deleting transaction' });
         });
     });
@@ -115,7 +117,8 @@ module.exports = {
         .then((transaction) => {
           res.json(transaction);
         })
-        .catch((err) => {
+        .catch((error) => {
+          console.log(error);
           res.status(400).json({ error: 'Error creating transaction' });
         });
     });
@@ -125,7 +128,8 @@ module.exports = {
       const googleId = req.user.googleId;
       let list = [];
       const userMap = await createUserMap();
-      const transactions = await Transaction.find().catch((err) => {
+      const transactions = await Transaction.find().catch((error) => {
+        console.log(error);
         res.status(400).json({ error: 'Error fetching transactions' });
       });
 
