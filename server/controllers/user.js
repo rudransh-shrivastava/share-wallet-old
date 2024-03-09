@@ -55,6 +55,40 @@ function calculateTotal(transactions, googleId) {
 }
 
 module.exports = {
+  createUser: function (req, res) {
+    ensureAuthenticated(req, res, function () {
+      const googleId = req.user.googleId;
+      const { name, email, username } = req.query;
+
+      // Check if the username already exists
+      User.findOne({ username })
+        .then((existingUser) => {
+          if (existingUser) {
+            return res.status(400).json({ message: 'Username already exists' });
+          }
+
+          const newUser = new User({
+            googleId,
+            name,
+            email,
+            username,
+          });
+          newUser
+            .save()
+            .then((newUser) => {
+              res.json(newUser);
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).json({ message: 'An error occurred' });
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).json({ message: 'An error occurred' });
+        });
+    });
+  },
   removeFriend: function (req, res) {
     ensureAuthenticated(req, res, function () {
       const googleId = req.user.googleId;

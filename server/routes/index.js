@@ -4,6 +4,7 @@ const userController = require('../controllers/user');
 const authenticationController = require('../controllers/authentication');
 const transactionController = require('../controllers/transaction');
 
+router.get('/user/create', userController.createUser);
 router.get('/user/total', userController.getTotal);
 router.get('/user/users', userController.getUsers);
 router.get('/user/details', userController.getDetails);

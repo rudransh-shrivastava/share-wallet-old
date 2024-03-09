@@ -18,15 +18,7 @@ passport.use(
           if (currentUser) {
             return callback(null, currentUser);
           } else {
-            // If the user doesn't exist, create a new user
-            const newUser = new User({
-              googleId: profile.id,
-              name: profile.displayName,
-              email: profile.emails[0].value,
-            });
-            return newUser.save().then((newUser) => {
-              callback(null, newUser);
-            });
+            return callback(null, profile);
           }
         })
         .catch((err) => {
