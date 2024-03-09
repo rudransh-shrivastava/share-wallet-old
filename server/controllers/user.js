@@ -307,4 +307,19 @@ module.exports = {
         });
     });
   },
+  searchUsers: function (req, res) {
+    ensureAuthenticated(req, res, function () {
+      const username = req.query.username;
+
+      User.find({ username: new RegExp('^' + username, 'i') })
+        .limit(20)
+        .then((users) => {
+          res.json(users);
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).json({ message: 'An error occurred' });
+        });
+    });
+  },
 };

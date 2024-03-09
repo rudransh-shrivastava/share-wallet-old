@@ -15,6 +15,7 @@ router.get('/user/friends/remove', userController.removeFriend);
 router.get('/user/friends/requests', userController.getFriendRequests);
 router.get('/user/friends/accept', userController.acceptFriendRequest);
 router.get('/user/friends/reject', userController.rejectFriendRequest);
+router.get('/user/search-users', userController.searchUsers);
 
 router.get('/transaction/list', transactionController.listTransactions);
 router.get('/transaction/create', transactionController.createTransaction);
@@ -22,7 +23,7 @@ router.get('/transaction/delete', transactionController.deleteTransaction);
 
 router.get('/auth/google', authenticationController.authorize);
 router.get('/auth/google/callback', authenticationController.callback);
-router.get('/login/failed', authenticationController.failed);
 router.get('/auth/google/logout', authenticationController.logout);
+router.get('/login/failed', authenticationController.failed);
 
 module.exports = router;
