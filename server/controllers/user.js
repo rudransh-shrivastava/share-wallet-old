@@ -74,14 +74,15 @@ module.exports = {
   addFriend: function (req, res) {
     ensureAuthenticated(req, res, function () {
       const googleId = req.user.googleId;
-      let friendId;
-      findIdByEmail(req.query.email).then((result) => {
-        if (result[0] == null) {
-          return res.json({ message: 'No user found with this email' });
-        } else {
-          friendId = result[0].googleId;
-        }
-      });
+      // let friendId;
+      // findIdByEmail(req.query.email).then((result) => {
+      //   if (result[0] == null) {
+      //     return res.json({ message: 'No user found with this email' });
+      //   } else {
+      //     friendId = result[0].googleId;
+      //   }
+      // });
+      const friendId = req.query.friendId;
       FriendRequest.findOne({
         userId: friendId,
         friendId: googleId,
