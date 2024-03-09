@@ -2,6 +2,7 @@ const User = require('../models/Users');
 const Friend = require('../models/Friends');
 const Transaction = require('../models/Transactions');
 const FriendRequest = require('../models/FriendRequest');
+const { createUserMap } = require('./transaction');
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -170,8 +171,15 @@ module.exports = {
     ensureAuthenticated(req, res, function () {
       const googleId = req.user.googleId;
       FriendRequest.find({ friendId: googleId, status: 'pending' })
-        .then((result) => {
-          res.json(result);
+        .then(async (result) => {
+          const userMap = await createUserMap();
+          const friendRequests = result.map((request) => ({
+            ...request._doc,
+            googleId: userMap[request.googleId],
+            friendId: userMap[request.friendId],
+          }));
+
+          res.json(friendRequests);
         })
         .catch((error) => {
           console.error(error);

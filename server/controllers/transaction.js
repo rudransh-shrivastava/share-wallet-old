@@ -184,3 +184,4 @@ module.exports = {
     });
   },
 };
+module.exports.createUserMap = createUserMap;
