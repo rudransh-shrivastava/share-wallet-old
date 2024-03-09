@@ -1,6 +1,7 @@
 const User = require('../models/Users');
 const Friend = require('../models/Friends');
 const Transaction = require('../models/Transactions');
+const FriendRequest = require('../models/FriendRequest');
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -24,6 +25,16 @@ function createFriendPair(userId, friendId) {
   const newFriendBack = new Friend({ userId: friendId, friendId: userId });
 
   return Promise.all([newFriend.save(), newFriendBack.save()]);
+}
+
+// find id of the user given their email
+function findIdByEmail(email) {
+  return Promise.all([User.findOne({ email })]);
+}
+
+// find name of user given their id
+function findNameById(id) {
+  return Promise.all([User.findOne({ googleId: id })]);
 }
 
 // calculate the total amount owed and the total amount owed to the user by all friends
@@ -63,16 +74,46 @@ module.exports = {
   addFriend: function (req, res) {
     ensureAuthenticated(req, res, function () {
       const googleId = req.user.googleId;
-      const friendId = req.query.friendId;
+      let friendId;
+      findIdByEmail(req.query.email).then((result) => {
+        if (result[0] == null) {
+          return res.json({ message: 'No user found with this email' });
+        } else {
+          friendId = result[0].googleId;
+        }
+      });
+      FriendRequest.findOne({
+        userId: friendId,
+        friendId: googleId,
+        status: 'pending',
+      }).then((existingFriendRequest) => {
+        if (existingFriendRequest) {
+          createFriendPair(googleId, friendId).then(() => {
+            FriendRequest.deleteOne({
+              userId: friendId,
+              friendId: googleId,
+            }).then((result) => {
+              return res.json(result);
+            });
+          });
+        }
+      });
 
       Friend.findOne({ userId: googleId, friendId: friendId })
         .then((existingFriend) => {
           if (existingFriend) {
             res.json({ message: 'Already friends' });
           } else {
-            createFriendPair(googleId, friendId)
-              .then((friend) => {
-                res.json(friend);
+            const newFriend = new FriendRequest({
+              userId: googleId,
+              friendId: friendId,
+              status: 'pending',
+            });
+            newFriend
+              .save()
+              .then((result) => {
+                console.log(result);
+                res.json(result);
               })
               .catch((error) => {
                 console.error(error);
@@ -87,6 +128,62 @@ module.exports = {
           res
             .status(500)
             .json({ error: 'An error occurred while checking friend' });
+        });
+    });
+  },
+  getFriendRequests: function (req, res) {
+    ensureAuthenticated(req, res, function () {
+      const googleId = req.user.googleId;
+      FriendRequest.find({ friendId: googleId, status: 'pending' })
+        .then((result) => {
+          res.json(result);
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).json({
+            error: 'An error occurred while fetching friend requests',
+          });
+        });
+    });
+  },
+  acceptFriendRequest: function (req, res) {
+    ensureAuthenticated(req, res, function () {
+      const googleId = req.user.googleId;
+      const friendId = req.query.friendId;
+      createFriendPair(googleId, friendId)
+        .then(() => {
+          FriendRequest.deleteOne({ userId: friendId, friendId: googleId })
+            .then((result) => {
+              res.json(result);
+            })
+            .catch((error) => {
+              console.error(error);
+              res
+                .status(500)
+                .json({ error: 'An error occurred while accepting friend' });
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+          res
+            .status(500)
+            .json({ error: 'An error occurred while accepting friend' });
+        });
+    });
+  },
+  rejectFriendRequest: function (req, res) {
+    ensureAuthenticated(req, res, function () {
+      const googleId = req.user.googleId;
+      const friendId = req.query.friendId;
+      FriendRequest.deleteOne({ userId: friendId, friendId: googleId })
+        .then((result) => {
+          res.json(result);
+        })
+        .catch((error) => {
+          console.error(error);
+          res
+            .status(500)
+            .json({ error: 'An error occurred while rejecting friend' });
         });
     });
   },

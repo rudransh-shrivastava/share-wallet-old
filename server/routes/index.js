@@ -11,6 +11,9 @@ router.get('/user/details', userController.getDetails);
 router.get('/user/friends', userController.getFriends);
 router.get('/user/friends/add', userController.addFriend);
 router.get('/user/friends/remove', userController.removeFriend);
+router.get('/user/friends/requests', userController.getFriendRequests);
+router.get('/user/friends/accept', userController.acceptFriendRequest);
+router.get('/user/friends/reject', userController.rejectFriendRequest);
 
 router.get('/transaction/list', transactionController.listTransactions);
 router.get('/transaction/create', transactionController.createTransaction);
