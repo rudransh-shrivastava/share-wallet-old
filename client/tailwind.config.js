@@ -13,7 +13,7 @@ export default {
           DEFAULT: 'hsla(0, 0%, 0%, 1)',
           dark: 'hsla(0, 0%, 100%, 1)',
         },
-        accentDark: 'hsla(170, 41%, 39%, 1)',
+        accentDark: 'hsla(170, 60%, 39%, 1)',
         accentBase: 'hsla(188, 42%, 15%, 1)',
         accentBorder: {
           DEFAULT: 'hsla(170, 40%, 95%, 1)',
