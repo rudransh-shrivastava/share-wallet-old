@@ -59,7 +59,7 @@ function ManageFriends() {
                 <ProfilePic name={user.name} />
                 <span>{user.name}</span>
                 <button
-                  className="ml-auto bg-accentDark text-bgPrimary px-4 py-2 rounded-md"
+                  className="ml-auto bg-accent-500 dark:bg-accent-300 hover:bg-accent-400 dark:hover:bg-accent-400 text-textPrimary dark:text-textPrimary-dark px-4 py-2 rounded-md"
                   onClick={async () => {
                     setFetchedUsers((prevFetchedUsers) =>
                       prevFetchedUsers.map((fetchedUser) => ({

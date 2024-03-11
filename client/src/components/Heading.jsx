@@ -11,7 +11,7 @@ const DashboardHeading = () => {
       <span className="text-xl">Dashboard</span>
       <div className="flex flex-col sm:flex-row items-center gap-2 sm:ml-auto flex-wrap w-full sm:w-auto">
         <button
-          className="bg-accentDark hover:bg-emerald-700 dark:hover:bg-emerald-500 text-bgPrimary px-4 py-2 rounded-md w-full sm:w-auto"
+          className="bg-accent-500 dark:bg-accent-300 hover:bg-accent-400 dark:hover:bg-accent-400 text-textPrimary dark:text-textPrimary-dark px-4 py-2 rounded-md w-full sm:w-auto"
           onClick={() => {
             setPopupTitle('Add Expense');
             setPopupContent(<AddExpense />);
@@ -21,7 +21,7 @@ const DashboardHeading = () => {
           Add Expense
         </button>
         <button
-          className="bg-accentDark hover:bg-emerald-700  dark:hover:bg-emerald-500 text-bgPrimary px-4 py-2 rounded-md w-full sm:w-auto"
+          className="bg-accent-500 dark:bg-accent-300 hover:bg-accent-400 dark:hover:bg-accent-400 text-textPrimary dark:text-textPrimary-dark px-4 py-2 rounded-md w-full sm:w-auto"
           onClick={() => {
             setPopupTitle('Add Friend');
             setPopupContent(<ManageFriends />);

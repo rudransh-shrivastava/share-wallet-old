@@ -229,7 +229,7 @@ function AddExpense() {
           <button
             type="submit"
             value="Submit"
-            className="h-10 w-full rounded-md bg-accentDark text-bgPrimary"
+            className="h-10 w-full rounded-md bg-accent-500 dark:bg-accent-300 hover:bg-accent-400 dark:hover:bg-accent-400 text-textPrimary dark:text-textPrimary-dark"
           >
             {submitResLoading ? <LoadingSpinner /> : 'Submit'}
           </button>

@@ -11,7 +11,7 @@ const Transactions = ({ transactions, transactionLoading }) => {
   return (
     <div className="flex flex-col lg:flex-row lg:divide-x-2 lg:divide-y-0 divide-accentBorder dark:divide-accentBorder-dark divide-y-2">
       <div className="w-full">
-        <div className="w-full py-2 border-b-2 border-accentBorder dark:border-accentBorder-dark text-center">
+        <div className="w-full py-4 border-b-2 border-accentBorder dark:border-accentBorder-dark text-center">
           You are Owed
         </div>
         <ul className="divide-y-2 divide-accentBorder dark:divide-accentBorder-dark max-h-[70svh] overflow-auto m-4">
@@ -31,7 +31,7 @@ const Transactions = ({ transactions, transactionLoading }) => {
         </ul>
       </div>
       <div className="w-full">
-        <div className="w-full py-2 border-b-2 border-accentBorder dark:border-accentBorder-dark text-center">
+        <div className="w-full py-4 border-b-2 border-accentBorder dark:border-accentBorder-dark text-center">
           You Owe
         </div>
         <ul className="divide-y-2 divide-accentBorder dark:divide-accentBorder-dark max-h-[70svh] overflow-auto p-4">

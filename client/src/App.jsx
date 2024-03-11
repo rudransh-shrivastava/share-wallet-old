@@ -43,6 +43,7 @@ function App() {
           onClick={() => {
             setShowUserDetailsPane(false);
           }}
+          className="min-h-svh"
         >
           <Nav
             showUserDetailsPane={showUserDetailsPane}
