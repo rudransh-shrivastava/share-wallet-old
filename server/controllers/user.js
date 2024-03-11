@@ -173,12 +173,13 @@ module.exports = {
       FriendRequest.find({ friendId: googleId, status: 'pending' })
         .then(async (result) => {
           const userMap = await createUserMap();
-          const friendRequests = result.map((request) => ({
-            ...request._doc,
-            googleId: userMap[request.googleId],
-            friendId: userMap[request.friendId],
-          }));
-
+          let friendRequests = [];
+          for (const friend of result) {
+            friendRequests.push({
+              id: friend.userId,
+              name: userMap[friend.userId],
+            });
+          }
           res.json(friendRequests);
         })
         .catch((error) => {
