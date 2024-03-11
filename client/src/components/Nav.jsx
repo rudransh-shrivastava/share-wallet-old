@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useUserContext } from '../context/user';
-import shareWalletLogo from '/shareWalletLogo.jpg';
 import useLocalStorage from '../context/useLocalStorage';
 import ProfilePic from './ProfilePic';
 const REACT_APP_SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
@@ -34,7 +33,37 @@ const Nav = ({ showUserDetailsPane, setShowUserDetailsPane }) => {
       <div className="relative container mx-auto flex py-4 justify-between px-2 lg:px-10">
         <div className="flex items-center">
           <div className="mr-2">
-            <img className="size-12" src={shareWalletLogo} alt="Share Wallet" />
+            <svg
+              className="size-10"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 800 745.56"
+            >
+              <path
+                fill="hsl(200, 100%, 75%)"
+                d="M775.46,272.78H152.17a52.63,52.63,0,0,0-8.19.64L682.93,129a52.17,52.17,0,0,1,63.89,36.89Z"
+                transform="translate(-100 -127.22)"
+              />
+              <path
+                fill="hsl(200, 100%, 60%)"
+                d="M144,273.42l-10.5,2.81A51.25,51.25,0,0,1,144,273.42Z"
+                transform="translate(-100 -127.22)"
+              />
+              <path
+                fill="hsl(200, 100%, 60%)"
+                d="M598.89,491.67A114.7,114.7,0,0,0,680,687.48H900V820.61a52.17,52.17,0,0,1-52.17,52.17H152.17A52.17,52.17,0,0,1,100,820.61V324.94a52.17,52.17,0,0,1,33.48-48.71l10.5-2.81a52.63,52.63,0,0,1,8.19-.64H847.83A52.16,52.16,0,0,1,900,324.94V458.07H680A114.35,114.35,0,0,0,598.89,491.67Z"
+                transform="translate(-100 -127.22)"
+              />
+              <path
+                fill="none"
+                d="M680,458.07a114.71,114.71,0,1,0,0,229.41H900V458.07ZM739.72,629.8a80.63,80.63,0,1,1,23.62-57A80.39,80.39,0,0,1,739.72,629.8Z"
+                transform="translate(-100 -127.22)"
+              />
+              <path
+                fill="hsl(200, 100%, 60%)"
+                d="M763.34,572.78a80.64,80.64,0,1,1-23.62-57A80.39,80.39,0,0,1,763.34,572.78Z"
+                transform="translate(-100 -127.22)"
+              />
+            </svg>
           </div>
           <div className="mr-2 text-2xl text-textPrimary dark:text-textPrimary-dark font-bold">
             Share Wallet
