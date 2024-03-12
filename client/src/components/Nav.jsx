@@ -138,8 +138,9 @@ const Nav = ({ showNavPane, setShowNavPane }) => {
                 <ProfilePic name={user.name} />
               </button>
             )}
+
             {user && showNavPane === 'userDetails' && (
-              <div className="nav-pane absolute top-full right-10 rounded-md translate-y-2 bg-bgSecondary dark:bg-bgSecondary-dark p-2 flex flex-col gap-2 items-center">
+              <div className="nav-pane absolute top-full left-0 right-0 sm:left-auto sm:right-10 rounded-md translate-y-2 bg-bgSecondary dark:bg-bgSecondary-dark p-2 flex flex-col gap-2 items-center w-full sm:w-[32rem] h-[50svh] z-50">
                 <span>Hey There, You are Logged in as</span>
                 <span>{user?.name}</span>
                 <a href={`${REACT_APP_SERVER_URL}/auth/google/logout`}>
@@ -150,7 +151,7 @@ const Nav = ({ showNavPane, setShowNavPane }) => {
               </div>
             )}
             {user && showNavPane === 'friendRequests' && (
-              <div className="nav-pane absolute top-full right-10 rounded-md translate-y-2 bg-bgSecondary dark:bg-bgSecondary-dark p-2 flex flex-col gap-2 items-center">
+              <div className="nav-pane absolute top-full left-0 right-0 sm:left-auto sm:right-10 rounded-md translate-y-2 bg-bgSecondary dark:bg-bgSecondary-dark p-2 flex flex-col gap-2 items-center w-full sm:w-[32rem] h-[50svh] z-50">
                 <FriendRequests />
               </div>
             )}
