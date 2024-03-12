@@ -11,7 +11,7 @@ function ManageFriends() {
   const [fetchedUsersError, setFetchedUsersError] = useState(false);
 
   useEffect(() => {
-    fetchUsers2(setFetchedUsers, setFetchedUsersLoading, setFetchedUsersError);
+    fetchUsers(setFetchedUsers, setFetchedUsersLoading, setFetchedUsersError);
   }, []);
 
   return (
@@ -70,7 +70,7 @@ function ManageFriends() {
                     user.isFriend
                       ? await removeFriend(user.googleId)
                       : await addFriend(user.googleId);
-                    fetchUsers2(
+                    fetchUsers(
                       setFetchedUsers,
                       setFetchedUsersLoading,
                       setFetchedUsersError,
@@ -89,7 +89,7 @@ function ManageFriends() {
   );
 }
 
-async function fetchUsers2(
+async function fetchUsers(
   setFetchedUsers,
   setFetchedUsersLoading,
   setFetchedUsersError,
@@ -134,9 +134,10 @@ async function fetchUsers2(
 async function addFriend(friendId) {
   try {
     const addFriendRes = await axios.get(
-      `${REACT_APP_SERVER_URL}/user/friends/add?friendId=${friendId}`,
+      `${REACT_APP_SERVER_URL}/user/friends/add}`,
       {
         withCredentials: true,
+        user: { googleId: friendId },
       }
     );
   } catch (err) {

@@ -4,7 +4,7 @@ import getProfilePicColor from '../getProfilePicColor';
 function ProfilePic({ name }) {
   return (
     <div
-      className="size-11 flex items-center justify-center rounded-full shrink-0 text-white uppercase text-xl"
+      className="size-12 flex items-center justify-center rounded-full shrink-0 text-white uppercase text-xl"
       style={{ backgroundColor: getProfilePicColor(name) }}
     >
       {name[0]}

@@ -9,6 +9,10 @@ export default {
           DEFAULT: 'hsla(0, 0%, 100%, 1)',
           dark: 'hsla(0, 0%, 8%, 1)',
         },
+        bgSecondary: {
+          DEFAULT: 'hsla(0, 0%, 90%, 1)',
+          dark: 'hsla(0, 0%, 10%, 1)',
+        },
         textPrimary: {
           DEFAULT: 'hsla(0, 0%, 0%, 1)',
           dark: 'hsla(0, 0%, 100%, 1)',

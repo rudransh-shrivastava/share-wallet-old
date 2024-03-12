@@ -15,8 +15,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [userLoading, setUserLoading] = useState(false);
   const [userError, setUserError] = useState(false);
-
-  const [showUserDetailsPane, setShowUserDetailsPane] = useState(false);
+  const [showNavPane, setShowNavPane] = useState(false);
 
   return (
     <UserProvider
@@ -40,15 +39,14 @@ function App() {
         }}
       >
         <div
-          onClick={() => {
-            setShowUserDetailsPane(false);
+          onClick={({ target }) => {
+            setShowNavPane((prev) =>
+              target.closest('.nav-pane') === null ? null : prev
+            );
           }}
           className="min-h-svh"
         >
-          <Nav
-            showUserDetailsPane={showUserDetailsPane}
-            setShowUserDetailsPane={setShowUserDetailsPane}
-          />
+          <Nav showNavPane={showNavPane} setShowNavPane={setShowNavPane} />
           <Dashboard />
           <Footer />
           {showPopup && <Popup />}
