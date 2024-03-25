@@ -4,14 +4,6 @@ const Transaction = require('../models/Transactions');
 const FriendRequest = require('../models/FriendRequest');
 const { createUserMap } = require('./transaction');
 
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    next();
-  } else {
-    res.status(401).json({ error: 'Not authenticated' });
-  }
-}
-
 // delete friends from the database
 function deleteFriendPair(userId, friendId) {
   return Promise.all([
@@ -57,270 +49,248 @@ function calculateTotal(transactions, googleId) {
 
 module.exports = {
   createUser: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId;
-      const { name, email, username } = req.query;
+    const googleId = req.user.googleId;
+    const { name, email, username } = req.query;
 
-      // Check if the username already exists
-      User.findOne({ username })
-        .then((existingUser) => {
-          if (existingUser) {
-            return res.status(400).json({ message: 'Username already exists' });
-          }
+    // Check if the username already exists
+    User.findOne({ username })
+      .then((existingUser) => {
+        if (existingUser) {
+          return res.status(400).json({ message: 'Username already exists' });
+        }
 
-          const newUser = new User({
-            googleId,
-            name,
-            email,
-            username,
-          });
-          newUser
-            .save()
-            .then((newUser) => {
-              res.json(newUser);
-            })
-            .catch((error) => {
-              console.error(error);
-              res.status(500).json({ message: 'An error occurred' });
-            });
-        })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).json({ message: 'An error occurred' });
+        const newUser = new User({
+          googleId,
+          name,
+          email,
+          username,
         });
-    });
+        newUser
+          .save()
+          .then((newUser) => {
+            res.json(newUser);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).json({ message: 'An error occurred' });
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred' });
+      });
   },
   removeFriend: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId;
-      const friendId = req.query.friendId;
-      deleteFriendPair(googleId, friendId)
-        .then((result) => {
-          res.json(result);
-        })
-        .catch((error) => {
-          console.error(error);
-          res
-            .status(500)
-            .json({ error: 'An error occurred while deleting friend' });
-        });
-    });
+    const googleId = req.user.googleId;
+    const friendId = req.query.friendId;
+    deleteFriendPair(googleId, friendId)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        console.error(error);
+        res
+          .status(500)
+          .json({ error: 'An error occurred while deleting friend' });
+      });
   },
   addFriend: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId;
-      // let friendId;
-      // findIdByEmail(req.query.email).then((result) => {
-      //   if (result[0] == null) {
-      //     return res.json({ message: 'No user found with this email' });
-      //   } else {
-      //     friendId = result[0].googleId;
-      //   }
-      // });
-      const friendId = req.query.friendId;
-      FriendRequest.findOne({
-        userId: friendId,
-        friendId: googleId,
-        status: 'pending',
-      }).then((existingFriendRequest) => {
-        if (existingFriendRequest) {
-          createFriendPair(googleId, friendId).then(() => {
-            FriendRequest.deleteOne({
-              userId: friendId,
-              friendId: googleId,
-            }).then((result) => {
-              return res.json(result);
-            });
+    const googleId = req.user.googleId;
+    // let friendId;
+    // findIdByEmail(req.query.email).then((result) => {
+    //   if (result[0] == null) {
+    //     return res.json({ message: 'No user found with this email' });
+    //   } else {
+    //     friendId = result[0].googleId;
+    //   }
+    // });
+    const friendId = req.query.friendId;
+    FriendRequest.findOne({
+      userId: friendId,
+      friendId: googleId,
+      status: 'pending',
+    }).then((existingFriendRequest) => {
+      if (existingFriendRequest) {
+        createFriendPair(googleId, friendId).then(() => {
+          FriendRequest.deleteOne({
+            userId: friendId,
+            friendId: googleId,
+          }).then((result) => {
+            return res.json(result);
           });
-        }
-      });
+        });
+      }
+    });
 
-      Friend.findOne({ userId: googleId, friendId: friendId })
-        .then((existingFriend) => {
-          if (existingFriend) {
-            res.json({ message: 'Already friends' });
-          } else {
-            const newFriend = new FriendRequest({
-              userId: googleId,
-              friendId: friendId,
-              status: 'pending',
-            });
-            newFriend
-              .save()
-              .then((result) => {
-                console.log(result);
-                res.json(result);
-              })
-              .catch((error) => {
-                console.error(error);
-                res
-                  .status(500)
-                  .json({ error: 'An error occurred while adding friend' });
-              });
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          res
-            .status(500)
-            .json({ error: 'An error occurred while checking friend' });
-        });
-    });
-  },
-  getFriendRequests: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId;
-      FriendRequest.find({ friendId: googleId, status: 'pending' })
-        .then(async (result) => {
-          const userMap = await createUserMap();
-          let friendRequests = [];
-          for (const friend of result) {
-            friendRequests.push({
-              id: friend.userId,
-              name: userMap[friend.userId],
-            });
-          }
-          res.json(friendRequests);
-        })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).json({
-            error: 'An error occurred while fetching friend requests',
+    Friend.findOne({ userId: googleId, friendId: friendId })
+      .then((existingFriend) => {
+        if (existingFriend) {
+          res.json({ message: 'Already friends' });
+        } else {
+          const newFriend = new FriendRequest({
+            userId: googleId,
+            friendId: friendId,
+            status: 'pending',
           });
-        });
-    });
-  },
-  acceptFriendRequest: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId;
-      const friendId = req.query.friendId;
-      createFriendPair(googleId, friendId)
-        .then(() => {
-          FriendRequest.deleteOne({ userId: friendId, friendId: googleId })
+          newFriend
+            .save()
             .then((result) => {
+              console.log(result);
               res.json(result);
             })
             .catch((error) => {
               console.error(error);
               res
                 .status(500)
-                .json({ error: 'An error occurred while accepting friend' });
+                .json({ error: 'An error occurred while adding friend' });
             });
-        })
-        .catch((error) => {
-          console.error(error);
-          res
-            .status(500)
-            .json({ error: 'An error occurred while accepting friend' });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res
+          .status(500)
+          .json({ error: 'An error occurred while checking friend' });
+      });
+  },
+  getFriendRequests: function (req, res) {
+    const googleId = req.user.googleId;
+    FriendRequest.find({ friendId: googleId, status: 'pending' })
+      .then(async (result) => {
+        const userMap = await createUserMap();
+        let friendRequests = [];
+        for (const friend of result) {
+          friendRequests.push({
+            id: friend.userId,
+            name: userMap[friend.userId],
+          });
+        }
+        res.json(friendRequests);
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).json({
+          error: 'An error occurred while fetching friend requests',
         });
-    });
+      });
+  },
+  acceptFriendRequest: function (req, res) {
+    const googleId = req.user.googleId;
+    const friendId = req.query.friendId;
+    createFriendPair(googleId, friendId)
+      .then(() => {
+        FriendRequest.deleteOne({ userId: friendId, friendId: googleId })
+          .then((result) => {
+            res.json(result);
+          })
+          .catch((error) => {
+            console.error(error);
+            res
+              .status(500)
+              .json({ error: 'An error occurred while accepting friend' });
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+        res
+          .status(500)
+          .json({ error: 'An error occurred while accepting friend' });
+      });
   },
   rejectFriendRequest: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId;
-      const friendId = req.query.friendId;
-      FriendRequest.deleteOne({ userId: friendId, friendId: googleId })
-        .then((result) => {
-          res.json(result);
-        })
-        .catch((error) => {
-          console.error(error);
-          res
-            .status(500)
-            .json({ error: 'An error occurred while rejecting friend' });
-        });
-    });
+    const googleId = req.user.googleId;
+    const friendId = req.query.friendId;
+    FriendRequest.deleteOne({ userId: friendId, friendId: googleId })
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        console.error(error);
+        res
+          .status(500)
+          .json({ error: 'An error occurred while rejecting friend' });
+      });
   },
   getUsers: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId;
+    const googleId = req.user.googleId;
 
-      User.find({}, 'name googleId')
-        .then((users) => {
-          res.json(users);
-        })
-        .catch((error) => {
-          console.error(error);
-          res
-            .status(500)
-            .json({ error: 'An error occurred while fetching users' });
-        });
-    });
+    User.find({}, 'name googleId')
+      .then((users) => {
+        res.json(users);
+      })
+      .catch((error) => {
+        console.error(error);
+        res
+          .status(500)
+          .json({ error: 'An error occurred while fetching users' });
+      });
   },
   getDetails: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId;
+    const googleId = req.user.googleId;
 
-      User.find({ googleId: googleId })
-        .then((user) => {
-          res.json(user);
-        })
-        .catch((error) => {
-          console.error(error);
-          res
-            .status(500)
-            .json({ error: 'An error occurred while fetching user details' });
-        });
-    });
+    User.find({ googleId: googleId })
+      .then((user) => {
+        res.json(user);
+      })
+      .catch((error) => {
+        console.error(error);
+        res
+          .status(500)
+          .json({ error: 'An error occurred while fetching user details' });
+      });
   },
   getTotal: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId;
+    const googleId = req.user.googleId;
 
-      Transaction.find({ 'participants.user': googleId })
-        .then((transactions) => {
-          const { total, owes, owed } = calculateTotal(transactions, googleId);
-          res.json({ total, owes, owed });
-        })
-        .catch((error) => {
-          console.error(error);
-          res
-            .status(500)
-            .json({ error: 'An error occurred while fetching transactions' });
-        });
-    });
+    Transaction.find({ 'participants.user': googleId })
+      .then((transactions) => {
+        const { total, owes, owed } = calculateTotal(transactions, googleId);
+        res.json({ total, owes, owed });
+      })
+      .catch((error) => {
+        console.error(error);
+        res
+          .status(500)
+          .json({ error: 'An error occurred while fetching transactions' });
+      });
   },
   getFriends: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const currentUser = req.user.googleId;
+    const currentUser = req.user.googleId;
 
-      Friend.find()
-        .then((users) => {
-          const friends = users.filter((user) => user.userId == currentUser);
-          const friendIds = friends.map((friend) => friend.friendId);
+    Friend.find()
+      .then((users) => {
+        const friends = users.filter((user) => user.userId == currentUser);
+        const friendIds = friends.map((friend) => friend.friendId);
 
-          User.find({ googleId: { $in: friendIds } }, 'name googleId')
-            .then((users) => {
-              res.json(users);
-            })
-            .catch((error) => {
-              console.error(error);
-              res
-                .status(500)
-                .json({ error: 'An error occurred while fetching friends' });
-            });
-        })
-        .catch((error) => {
-          console.error(error);
-          res
-            .status(500)
-            .json({ error: 'An error occurred while fetching friends' });
-        });
-    });
+        User.find({ googleId: { $in: friendIds } }, 'name googleId')
+          .then((users) => {
+            res.json(users);
+          })
+          .catch((error) => {
+            console.error(error);
+            res
+              .status(500)
+              .json({ error: 'An error occurred while fetching friends' });
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+        res
+          .status(500)
+          .json({ error: 'An error occurred while fetching friends' });
+      });
   },
   searchUsers: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const username = req.query.username;
+    const username = req.query.username;
 
-      User.find({ username: new RegExp('^' + username, 'i') })
-        .limit(20)
-        .then((users) => {
-          res.json(users);
-        })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).json({ message: 'An error occurred' });
-        });
-    });
+    User.find({ username: new RegExp('^' + username, 'i') })
+      .limit(20)
+      .then((users) => {
+        res.json(users);
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred' });
+      });
   },
 };

@@ -3,14 +3,6 @@ const User = require('../models/Users');
 const UNKNOWN_USER = 'Unknown User';
 const SPLIT_TYPE = 'equal';
 
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    next();
-  } else {
-    res.status(401).json({ error: 'Not authenticated' });
-  }
-}
-
 // fetch all users and return a map of googleId to name
 async function createUserMap() {
   const users = await User.find({}).catch((error) => {
@@ -80,108 +72,97 @@ function createParticipant(user, paidBy, amount, expenseWith) {
 }
 module.exports = {
   deleteTransaction: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId;
-      const transactionId = req.query.transactionId;
+    const googleId = req.user.googleId;
+    const transactionId = req.query.transactionId;
 
-      Transaction.deleteOne({ _id: transactionId })
-        .then((result) => {
-          res.json(result);
-        })
-        .catch((error) => {
-          console.log(error);
-          res.status(400).json({ error: 'Error deleting transaction' });
-        });
-    });
+    Transaction.deleteOne({ _id: transactionId })
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(400).json({ error: 'Error deleting transaction' });
+      });
   },
   createTransaction: function (req, res) {
-    ensureAuthenticated(req, res, function () {
-      const googleId = req.user.googleId;
-      const data = req.query;
-      let expenseWith = data.expenseWith.split(',');
-      expenseWith.push(googleId);
-      const paidBy = data.paidBy === 'me' ? googleId : data.paidBy;
+    const googleId = req.user.googleId;
+    const data = req.query;
+    let expenseWith = data.expenseWith.split(',');
+    expenseWith.push(googleId);
+    const paidBy = data.paidBy === 'me' ? googleId : data.paidBy;
 
-      const participants = expenseWith.map((user) =>
-        createParticipant(user, paidBy, data.amount, expenseWith)
-      );
+    const participants = expenseWith.map((user) =>
+      createParticipant(user, paidBy, data.amount, expenseWith)
+    );
 
-      const transaction = createTransaction(
-        data,
-        participants,
-        paidBy,
-        googleId
-      );
+    const transaction = createTransaction(data, participants, paidBy, googleId);
 
-      transaction
-        .save()
-        .then((transaction) => {
-          res.json(transaction);
-        })
-        .catch((error) => {
-          console.log(error);
-          res.status(400).json({ error: 'Error creating transaction' });
-        });
-    });
-  },
-  listTransactions: function (req, res) {
-    ensureAuthenticated(req, res, async function () {
-      const googleId = req.user.googleId;
-      let list = [];
-      const userMap = await createUserMap();
-      const transactions = await Transaction.find().catch((error) => {
+    transaction
+      .save()
+      .then((transaction) => {
+        res.json(transaction);
+      })
+      .catch((error) => {
         console.log(error);
-        res.status(400).json({ error: 'Error fetching transactions' });
+        res.status(400).json({ error: 'Error creating transaction' });
       });
+  },
+  listTransactions: async function (req, res) {
+    const googleId = req.user.googleId;
+    let list = [];
+    const userMap = await createUserMap();
+    const transactions = await Transaction.find().catch((error) => {
+      console.log(error);
+      res.status(400).json({ error: 'Error fetching transactions' });
+    });
 
-      for (let txn of transactions) {
-        const time = txn.createdAt;
-        const transactionId = txn._id;
-        const description = txn.description;
-        const createdBy = userMap[txn.createdBy] || UNKNOWN_USER;
+    for (let txn of transactions) {
+      const time = txn.createdAt;
+      const transactionId = txn._id;
+      const description = txn.description;
+      const createdBy = userMap[txn.createdBy] || UNKNOWN_USER;
 
-        if (txn.paidBy == googleId) {
-          const owesMoney = true;
-          for (let participant of txn.participants) {
-            if (participant.user !== googleId) {
-              const name = userMap[participant.user] || UNKNOWN_USER;
-              const amount = participant.amountOwes;
-              list.push(
-                createListEntry(
-                  transactionId,
-                  name,
-                  amount,
-                  owesMoney,
-                  description,
-                  time,
-                  createdBy
-                )
-              );
-            }
+      if (txn.paidBy == googleId) {
+        const owesMoney = true;
+        for (let participant of txn.participants) {
+          if (participant.user !== googleId) {
+            const name = userMap[participant.user] || UNKNOWN_USER;
+            const amount = participant.amountOwes;
+            list.push(
+              createListEntry(
+                transactionId,
+                name,
+                amount,
+                owesMoney,
+                description,
+                time,
+                createdBy
+              )
+            );
           }
-        } else {
-          const owesMoney = false;
-          const name = userMap[txn.paidBy] || UNKNOWN_USER;
-          for (let participant of txn.participants) {
-            if (participant.user === googleId) {
-              const amount = participant.amountOwes;
-              list.push(
-                createListEntry(
-                  transactionId,
-                  name,
-                  amount,
-                  owesMoney,
-                  description,
-                  time,
-                  createdBy
-                )
-              );
-            }
+        }
+      } else {
+        const owesMoney = false;
+        const name = userMap[txn.paidBy] || UNKNOWN_USER;
+        for (let participant of txn.participants) {
+          if (participant.user === googleId) {
+            const amount = participant.amountOwes;
+            list.push(
+              createListEntry(
+                transactionId,
+                name,
+                amount,
+                owesMoney,
+                description,
+                time,
+                createdBy
+              )
+            );
           }
         }
       }
-      res.json(list);
-    });
+    }
+    res.json(list);
   },
 };
 module.exports.createUserMap = createUserMap;

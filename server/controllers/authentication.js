@@ -12,6 +12,14 @@ const googleAuthClient = new google.auth.OAuth2(
   `${server_url}/auth/google/callback`
 );
 
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res.status(401).json({ error: 'Not authenticated' });
+  }
+}
+
 module.exports = {
   authorize: function (req, res, next) {
     passport.authenticate('google', {
@@ -60,4 +68,5 @@ module.exports = {
       message: 'failed',
     });
   },
+  ensureAuthenticated: ensureAuthenticated,
 };

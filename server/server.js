@@ -15,6 +15,7 @@ const passportConfig = require('./config/passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const app = express();
+const { ensureAuthenticated } = require('./controllers/authentication');
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
@@ -42,6 +43,7 @@ databaseConfig.connect();
 app.use(express.json());
 corsConfig(app);
 
+app.use(ensureAuthenticated);
 app.use('/', userRoutes);
 
 app.listen(port, () => {
