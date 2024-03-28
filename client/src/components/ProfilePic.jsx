@@ -1,5 +1,5 @@
 import React from 'react';
-import getProfilePicColor from '../getProfilePicColor';
+import getProfilePicColor from '../utils/getProfilePicColor';
 
 function ProfilePic({ name }) {
   return (

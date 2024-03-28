@@ -1,10 +1,9 @@
 import React from 'react';
 import LoadingSpinner from './LoadingSpinner';
 
-const Overall = ({ userTotal, userTotalLoading, userTotalError }) => {
+const Overall = ({ userTotal, userTotalLoading }) => {
   return (
     <div className="flex flex-wrap w-full justify-center sm:gap-4 md:gap-8 py-2">
-      {userTotalError ? 'Something went wrong' : ''}
       {userTotalLoading ? (
         <LoadingSpinner />
       ) : (

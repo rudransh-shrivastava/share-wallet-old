@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { axiosWithCredentials } from '../axiosWithCredentials';
+import { axiosWithCredentials } from '../utils/axiosWithCredentials';
 import ProfilePic from './ProfilePic';
 import LoadingSpinner from './LoadingSpinner';
 

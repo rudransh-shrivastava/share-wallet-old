@@ -1,6 +1,10 @@
 import { createContext, useContext } from 'react';
 
 export const DashboardDataContext = createContext({
+  transactions: null,
+  transactionLoading: null,
+  userTotal: null,
+  userTotalLoading: null,
   getDashboardData: () => {},
 });
 

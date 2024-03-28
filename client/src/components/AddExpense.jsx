@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import AddedUserTag from './AddedUserTag';
 import UserCard from './UserCard';
 import { usePopupContext } from '../context/popup';
-import { axiosWithCredentials } from '../axiosWithCredentials';
+import { axiosWithCredentials } from '../utils/axiosWithCredentials';
 import LoadingSpinner from './LoadingSpinner';
+import { useDashboardDataContext } from '../context/dashboardData';
 
 function AddExpense() {
   const { setShowPopup } = usePopupContext();
@@ -57,6 +58,8 @@ function AddExpense() {
     [addExpenseWith, searchQuery, fetchedFriends]
   );
 
+  const { getDashboardData } = useDashboardDataContext();
+
   useEffect(() => {
     setFormData((prevFormData) => {
       return {
@@ -89,6 +92,7 @@ function AddExpense() {
               setSubmitRes,
               setSubmitResLoading,
               setSubmitResError,
+              getDashboardData,
             });
           }
         }}
@@ -245,6 +249,7 @@ const formSubmit = ({
   setSubmitRes,
   setSubmitResLoading,
   setSubmitResError,
+  getDashboardData,
 }) => {
   (async () => {
     try {
@@ -266,6 +271,7 @@ const formSubmit = ({
       console.log(err);
     }
     closePopup();
+    getDashboardData();
   })();
 };
 

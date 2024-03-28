@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { axiosWithCredentials } from '../axiosWithCredentials';
+import { axiosWithCredentials } from '../utils/axiosWithCredentials';
 import LoadingSpinner from './LoadingSpinner';
 import { useDashboardDataContext } from '../context/dashboardData';
 import ProfilePic from './ProfilePic';
